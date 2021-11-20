@@ -15,6 +15,7 @@ path_capa5 = f"PROJETO-PROGRAMACAO/app1/images/capa6.png"
 path_capa6 = f"PROJETO-PROGRAMACAO/app1/images/capa7.jpg"
 path_capa7 = f"PROJETO-PROGRAMACAO/app1/images/capa8.png"
 path_capa8 = f"PROJETO-PROGRAMACAO/app1/images/capa9.jpg"
+path_busca = f"PROJETO-PROGRAMACAO/app1/images/lupa.png"
 
 
 #definindo o menu inicial
@@ -30,14 +31,6 @@ tela_inicial.resizable(False, False)
 img_tela1 = ImageTk.PhotoImage(Image.open(path))
 label_tela1 = Label(tela_inicial, image = img_tela1).place(x=0,y=33)
 
-
-#entrada de busca de livro por nome.
-entrada_busca = Entry(tela_inicial, width=30)
-entrada_busca.place(height=26,x=72, y=0)
-
-# função que será usada no botão
-def Procurar():
-    print("O livro que você procurou foi: " , entrada_busca.get())
 
 #Imagens/Capas dos livros
 img_capa1 = ImageTk.PhotoImage(Image.open(path_capa))
@@ -64,24 +57,27 @@ botao_capa7 = Button(tela_inicial, image = img_capa7).place(x=280,y=223)
 img_capa8 = ImageTk.PhotoImage(Image.open(path_capa8))
 botao_capa8 = Button(tela_inicial, image = img_capa8).place(x=410,y=223)
 
-
-#BOTAO
-#Quando se passa argumentos numa função que será realizada por um botão, é necessario usar o lambda.
-cmd = Button(tela_inicial, text = "Procurar", command= Procurar).place(x=0, y=0)
-cmd = Button(tela_inicial, text = "Filtrar").place(x=300, y=0)
-
-
 #filtro para busca
 var1 = IntVar()
 var2 = IntVar()
 var3 = IntVar()
 
-check1 = Checkbutton(tela_inicial, text='Autor', variable=var1, onvalue=1, offvalue=0)
-check1.place(x=350, y=0)
+check1 = Checkbutton(tela_inicial, text='Título', variable=var1, onvalue=1, offvalue=0)
+check1.place(x=20, y=0)
 check2 = Checkbutton(tela_inicial, text='Genêro',variable=var2, onvalue=1, offvalue=0)
-check2.place(x=400, y=0)
-check3 = Checkbutton(tela_inicial, text='Ano',variable=var3, onvalue=1, offvalue=0)
-check3.place(x=460, y=0)
+check2.place(x=100, y=0)
+check3 = Checkbutton(tela_inicial, text='Autor',variable=var3, onvalue=1, offvalue=0)
+check3.place(x=180, y=0)
+
+#ComboBox para filtrar o conteudo selecionado no CheckBox
+valores = ["Valores serão inseridos aqui..."]
+filtro = ttk.Combobox(tela_inicial, values=valores, width=30, height=90).place(x=240, y=0)
+
+#BOTAO
+#Quando se passa argumentos numa função que será realizada por um botão, é necessario usar o lambda.
+image_lupa = ImageTk.PhotoImage(Image.open(path_busca))
+cmd = Button(tela_inicial, text = "Procurar", image=image_lupa, border="0").place(x=445, y=0)
+
 
 
 #mainloop executa o loop que permite a janela permanecer aberta
