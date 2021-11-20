@@ -17,15 +17,13 @@ menu_inicial.geometry("624x755+0+0")
 menu_inicial.resizable(True, True)
 menu_inicial.minsize(600, 450)
 # iconbitmap para trocar o icone da janela, basta apenas colocar o caminho
-menu_inicial.iconbitmap("images/icon.ico")
+#menu_inicial.iconbitmap("images/icon.ico")
 
 # função que será usada no botão
 def cmd_Click(mensagem):
     print(mensagem)
 
-"""def atualizar_lista():
-    procura = text_field.get()
-    lista.delete(0, tK.END)"""
+
 
 
 #BOTAO
