@@ -7,7 +7,7 @@ from tkinter import messagebox
 path = "PROJETO-PROGRAMACAO/app1/images/bg1.jpg"
 
 #caminho para capa teste
-path_capa = f"PROJETO-PROGRAMACAO/app1/images/capa2.jpg"
+path_capa  = f"PROJETO-PROGRAMACAO/app1/images/capa2.jpg"
 path_capa2 = f"PROJETO-PROGRAMACAO/app1/images/capa3.jpg"
 path_capa3 = f"PROJETO-PROGRAMACAO/app1/images/capa4.jpg"
 path_capa4 = f"PROJETO-PROGRAMACAO/app1/images/capa5.jpg"
@@ -37,7 +37,7 @@ entrada_busca.place(height=26,x=72, y=0)
 
 # função que será usada no botão
 def Procurar():
-    print("O livro que vocÊ procurou foi: " , entrada_busca.get())
+    print("O livro que você procurou foi: " , entrada_busca.get())
 
 #Imagens/Capas dos livros
 img_capa1 = ImageTk.PhotoImage(Image.open(path_capa))
@@ -71,19 +71,17 @@ cmd = Button(tela_inicial, text = "Procurar", command= Procurar).place(x=0, y=0)
 cmd = Button(tela_inicial, text = "Filtrar").place(x=300, y=0)
 
 
-
-
-
 #filtro para busca
-lista_filtro = ["Gênero", "Autor", "Ano"]
-cb_filtro = ttk.Combobox(tela_inicial, values=lista_filtro, width=30).place(x=350,y=0, height=26)
+var1 = IntVar()
+var2 = IntVar()
+var3 = IntVar()
 
-
-
-
-
-
-
+check1 = Checkbutton(tela_inicial, text='Autor', variable=var1, onvalue=1, offvalue=0)
+check1.place(x=350, y=0)
+check2 = Checkbutton(tela_inicial, text='Genêro',variable=var2, onvalue=1, offvalue=0)
+check2.place(x=400, y=0)
+check3 = Checkbutton(tela_inicial, text='Ano',variable=var3, onvalue=1, offvalue=0)
+check3.place(x=460, y=0)
 
 
 #mainloop executa o loop que permite a janela permanecer aberta
