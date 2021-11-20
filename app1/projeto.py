@@ -41,7 +41,7 @@ main_label.place(x=0, y=33)
 
 #Imagens/Capas dos livros
 img_capa1 = ImageTk.PhotoImage(Image.open(path_capa))
-botao_capa1 = Label(main_label, image = img_capa1)
+botao_capa1 = Button(main_label, image = img_capa1)
 botao_capa1.place(x=20,y=54)
 
 img_capa2 = ImageTk.PhotoImage(Image.open(path_capa2))
@@ -85,7 +85,7 @@ filtro = ttk.Combobox(tela_inicial, values=valores, width=30, height=90).place(x
 #BOTAO
 #Quando se passa argumentos numa função que será realizada por um botão, é necessario usar o lambda.
 image_lupa = ImageTk.PhotoImage(Image.open(path_busca))
-button_lupa = Button(tela_inicial, image=image_lupa, border="0",command=lambda: main_label.place)
+button_lupa = Button(tela_inicial, image=image_lupa, border="0", command=lambda: main_label.place(relx=0.0, rely=0.1))
 button_lupa.place(x=445, y=0)
 
 image_reset = ImageTk.PhotoImage(Image.open(path_reset))
