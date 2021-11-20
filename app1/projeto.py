@@ -65,9 +65,9 @@ var3 = IntVar()
 check1 = Checkbutton(tela_inicial, text='Título', variable=var1, onvalue=1, offvalue=0)
 check1.place(x=20, y=0)
 check2 = Checkbutton(tela_inicial, text='Genêro',variable=var2, onvalue=1, offvalue=0)
-check2.place(x=100, y=0)
+check2.place(x=90, y=0)
 check3 = Checkbutton(tela_inicial, text='Autor',variable=var3, onvalue=1, offvalue=0)
-check3.place(x=180, y=0)
+check3.place(x=160, y=0)
 
 #ComboBox para filtrar o conteudo selecionado no CheckBox
 valores = ["Valores serão inseridos aqui..."]
