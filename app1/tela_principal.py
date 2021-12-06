@@ -7,8 +7,6 @@ from funcoes import*
 
 caminho = "PROJETO-PROGRAMACAO/app1/images/"
 
-dic_livros = {1:['Era uma vez em Hollywood','Ronaldo','2021','terror'], 2:['O Capital','Karl Marx', '1880','Sociologia']}
-
 
 janela_principal =Tk()
 janela_principal.geometry ("640x480+300+100")
