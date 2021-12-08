@@ -9,6 +9,7 @@ dic_livros = {}
 dic_cliente = {}
 lista_livros = []
 
+
 #adicionando as informações do arquivo no dicionario
 arquivo_livro = open('livros.txt','r')
 for linha in arquivo_livro:
@@ -58,7 +59,7 @@ def criar_tela_cadastro():
     global autor_livro
 
     janela_cadastro = Toplevel()
-    janela_cadastro.geometry("450x450+300+100")
+    janela_cadastro.geometry("480x480+641+0")
     janela_cadastro.config(bg="#1d475d")
     janela_cadastro.resizable(FALSE,FALSE)
 
@@ -111,7 +112,7 @@ def criar_tela_pesquisa():
     global tv
     global entrada_pesquisa
     tela_pesquisa = Toplevel()
-    tela_pesquisa.geometry("450x450+300+100")
+    tela_pesquisa.geometry("480x480+641+0")
     tela_pesquisa.config(bg="#1d475d")
     tela_pesquisa.resizable(0, 0)
 
