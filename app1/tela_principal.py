@@ -9,7 +9,7 @@ caminho = "PROJETO-PROGRAMACAO/app1/images/"
 
 
 janela_principal =Tk()
-janela_principal.geometry ("640x480+300+100")
+janela_principal.geometry ("640x480+0+0")
 janela_principal.title("Library Sis")
 janela_principal.iconbitmap(caminho+"icon.ico")
 janela_principal.resizable(0,0)

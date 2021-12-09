@@ -12,6 +12,7 @@ dic_autor = {}
 dic_cliente = {}
 lista_livros = []
 
+
 #adicionando as informações do arquivo no dicionario
 arquivo_livro = open('livros.txt','r')
 for linha in arquivo_livro:
@@ -177,7 +178,7 @@ def criar_tela_cadastro():
     global autor_livro
 
     janela_cadastro = Toplevel()
-    janela_cadastro.geometry("450x450+300+100")
+    janela_cadastro.geometry("480x480+641+0")
     janela_cadastro.config(bg="#1d475d")
     janela_cadastro.resizable(FALSE,FALSE)
 
@@ -215,6 +216,46 @@ def criar_tela_cadastro():
     botao_fechar = Button(janela_cadastro, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(janela_cadastro))
     botao_fechar.place(x=2, y=350)
     
+<<<<<<< HEAD
+=======
+#Compara a entrada do Entry com o item no dicionário, se True, retorna as informações dos livros
+def pesquisar():
+    #Limpa a pesquisa antes de mostrar um novo resultado
+    for item in tv.get_children():
+        tv.delete(item)
+    if entrada_pesquisa.get() in dic_livros:
+        tv.insert("","end", values=(entrada_pesquisa.get(),
+        dic_livros[entrada_pesquisa.get()][0],
+        dic_livros[entrada_pesquisa.get()][1],
+        dic_livros[entrada_pesquisa.get()][2]))
+    else:
+        messagebox.showerror("Ops!","Livro não encontrado!")
+
+#Limpa a pesquisa
+def limpar():
+    for item in tv.get_children():
+        tv.delete(item)
+
+def criar_tela_pesquisa():
+    global tv
+    global entrada_pesquisa
+    tela_pesquisa = Toplevel()
+    tela_pesquisa.geometry("480x480+641+0")
+    tela_pesquisa.config(bg="#1d475d")
+    tela_pesquisa.resizable(0, 0)
+
+    tv=ttk.Treeview(tela_pesquisa,columns=('ID','Título','Ano','Autor'),show='headings')
+    tv.column('ID',minwidth=0, width=80)
+    tv.column('Título',minwidth=0, width=190) 
+    tv.column('Ano',minwidth=0, width=55) 
+    tv.column('Autor',minwidth=0, width=121) 
+
+    tv.heading('ID', text='ID')
+    tv.heading('Título', text='Título')
+    tv.heading('Ano', text='Ano')
+    tv.heading('Autor', text='Autor')
+    tv.place(x=0, y=80)
+>>>>>>> 38dddce7e07d8b46ae0196059044f57e20981589
 
 
     
