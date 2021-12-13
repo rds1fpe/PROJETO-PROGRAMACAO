@@ -5,13 +5,13 @@ from tkinter import messagebox
 from funcoes import*
 
 
-caminho = "PROJETO-PROGRAMACAO/app1/images/"
+caminho = ("/Users/Ronaldo/Desktop/python/PROJETO-PROGRAMACAO/images/")
 
 
 janela_principal =Tk()
 janela_principal.geometry ("640x480+0+0")
 janela_principal.title("Library Sis")
-janela_principal.iconbitmap(caminho+"icon.ico")
+janela_principal.iconbitmap(True,caminho+"icon.ico")
 janela_principal.resizable(0,0)
 
 #imagem de fundo
@@ -38,7 +38,7 @@ label_pesquisa.place(x=80, y=216)
 button_cadastro = Button(janela_principal, image=imagem_cadastro,command=criar_tela_cadastro)
 button_cadastro.place(x=210, y=130)
 label_cadastro = Label(janela_principal,text="Cadastrar Livro",bg="#3c6474",fg='white',font= "Times 8 bold")
-label_cadastro.place(x=209, y=216)
+label_cadastro.place(x=209, y=216)  
 
 
 button_cadastro_cliente = Button(janela_principal, image=imagem_cadastro_cliente)
