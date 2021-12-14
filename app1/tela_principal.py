@@ -5,7 +5,7 @@ from tkinter import messagebox
 from funcoes import*
 
 
-caminho = ("/Users/Ronaldo/Desktop/python/PROJETO-PROGRAMACAO/images/")
+caminho = ("/Users/RONALDO/Desktop/PROJETO-PROGRAMACAO/app1/images/")
 
 
 janela_principal =Tk()
@@ -43,8 +43,8 @@ label_cadastro.place(x=209, y=216)
 
 button_cadastro_cliente = Button(janela_principal, image=imagem_cadastro_cliente)
 button_cadastro_cliente.place(x=340, y=130)
-label_cliente = Label(janela_principal,text="Adicionar Cliente",bg="#3c6474",fg='white', font= "Times 8 bold")
-label_cliente.place(x=333, y=216)
+label_cliente = Label(janela_principal,text="Cliente",bg="#3c6474",fg='white', font= "Times 8 bold")
+label_cliente.place(x=340, y=216)
 
 
 button_venda = Button(janela_principal,image=imagem_venda)

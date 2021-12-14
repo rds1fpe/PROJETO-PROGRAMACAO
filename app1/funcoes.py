@@ -1,3 +1,4 @@
+from os import truncate
 from tkinter import*
 from tkinter import ttk
 from tkinter import font
@@ -85,7 +86,7 @@ def pesquisar():
 
     elif radioValue.get() == 3:
         aux_autor = 0
-        if entrada_pesquisa.get().lower() not in dic_autor:
+        if entrada_pesquisa.get().lower() not in dic_autor: #dicionario de autor necessário apenas para verificação da existencia do autor no dicionario
                 messagebox.showerror("Ops!","Livro não encontrado!")
         else:
             for autor in lista_autor:
@@ -97,25 +98,108 @@ def pesquisar():
             
                 aux_autor += 1
 
-def selecionar():
+def editar():
+   
+    dic_livros[id_livro_ed.get()] = [nome_livro_ed.get(), ano_livro_ed.get(), autor_livro_ed.get()]
+    dic_titulo[nome_livro_ed.get()] = [id_livro_ed.get(), nome_livro_ed.get(), ano_livro_ed.get(), autor_livro_ed.get()]
+    dic_autor[id_livro_ed.get()] = [[autor_livro_ed.get()  ,nome_livro_ed.get(), ano_livro_ed.get(), autor_livro_ed.get()]]
+
+    
+
+    arquivo_livro = open("livros.txt","a")
+    arquivo_livro.truncate(0)
+    lista_autor.append([id_livro_ed.get(), nome_livro_ed.get(), ano_livro_ed.get(), autor_livro_ed.get()])
+        
+    
+    aux_editar = 0
+    for livro in dic_livros:
+        arquivo_livro.write(str(lista_autor[aux_editar][0])+",")
+        arquivo_livro.write(str(lista_autor[aux_editar][1])+",")
+        arquivo_livro.write(str(lista_autor[aux_editar][2])+",")
+        arquivo_livro.write(str(lista_autor[aux_editar][3])+"\n")
+
+        aux_editar += 1
+    arquivo_livro.close()
+
+
+
+
+
+
+#Função responsável por editar o conteudo do livro com excesso do ISBN
+def tela_edicao():
+
+    global id_livro_ed
+    global nome_livro_ed
+    global ano_livro_ed
+    global autor_livro_ed
+
+    tela_edicao = Toplevel()
+    tela_edicao.geometry("360x360+641+0")
+    tela_edicao.resizable(0, 0)
+
+    titulo_tela_ed = Label(tela_edicao, text= 'EDITAR LIVRO')
+    titulo_tela_ed.config(font='Arial 12 bold',fg='#1d475d', width=37, height=2, bg="white", relief='groove')
+    titulo_tela_ed.place(x=0, y=0)
+
+    fundo_tela_ed = Label(tela_edicao, width=66, height=15 ,borderwidth=4, relief='groove')
+    fundo_tela_ed.place(x=-20, y=71)
+
     selected = tv.focus()
     selecionados = tv.item(selected, 'values')
-    print(selecionados)
 
+    #Entradas do usuario que serão salvas no dicionário
+    label_id_ed = Label(tela_edicao, width=15, text='* ISBN', font="Arial 9",fg="black")
+    label_id_ed['state'] = DISABLED
+    label_id_ed.place(x=-35,y=80)
+    id_livro_ed = Entry(tela_edicao, width=30)
+    id_livro_ed.insert(0, selecionados[0])
+    id_livro_ed['state'] = DISABLED
+    id_livro_ed.place(x=2, y=100)
+
+    label_nome_ed = Label(tela_edicao, width=10, height=1, text='* Nome',font="Arial 9",fg="black")
+    label_nome_ed.place(x=-15,y=130)
+    nome_livro_ed = Entry(tela_edicao, width=30)
+    nome_livro_ed.insert(0, selecionados[1])
+    nome_livro_ed.place(x=2, y=150)
+
+    label_ano_ed = Label(tela_edicao, width=10, height=1 ,text='* Ano',font="Arial 9",fg="black")
+    label_ano_ed.place(x=-22,y=180)
+    ano_livro_ed = Entry(tela_edicao, width=30)
+    ano_livro_ed.insert(0, selecionados[2])
+    ano_livro_ed.place(x=2, y=200)
+
+    label_autor_ed = Label(tela_edicao, width=10, height=1, text='Autor',font="Arial 9",fg="black")
+    label_autor_ed.place(x=-19,y=230)
+    autor_livro_ed = Entry(tela_edicao, width=30)
+    autor_livro_ed.insert(0, selecionados[3])
+    autor_livro_ed['state'] = DISABLED
+    autor_livro_ed.place(x=2, y=250)
+
+    botao_cadastrar_ed = Button(tela_edicao,text="SALVAR", width=15 , command=editar)
+    botao_cadastrar_ed.place(x=2, y=320)
+
+    botao_fechar_ed = Button(tela_edicao, text="VOLTAR", width=15, fg="#042c44", command=lambda:sair(tela_edicao))
+    botao_fechar_ed.place(x=240, y=320)
+
+
+
+    
 #criando tela de cadastro
 def criar_tela_pesquisa():
     global tv
     global entrada_pesquisa
     global radioValue
 
+
     tela_pesquisa = Toplevel()
     tela_pesquisa.geometry("480x480+641+0")
-    tela_pesquisa.config(bg="#1d475d")
+    tela_pesquisa.config(bg="#D3D3D3")
     tela_pesquisa.resizable(0, 0)
 
-    titulo_tela_pes = Label(tela_pesquisa, text= '__Consultar Livros__', relief='groove')
-    titulo_tela_pes.config(font='Impact 18',fg='#1d475d', width=37, height=2, bg="#ed823b")
-    titulo_tela_pes.place(x=0, y=0)
+    titulo_tela_pes = Label(tela_pesquisa, text= 'CONSULTAR LIVROS', relief='groove')
+    titulo_tela_pes.config(font='Arial 18 bold',fg='#1d475d', width=37, height=2, bg="white")
+    titulo_tela_pes.place(x=-43, y=0)
 
     #Criando janela para visualização do conteudo em grade(TREEVIEW)
     tv=ttk.Treeview(tela_pesquisa,columns=('ID','Título','Ano','Autor'),show='headings', selectmode=BROWSE)
@@ -147,15 +231,15 @@ def criar_tela_pesquisa():
     radioValue = IntVar(tela_pesquisa) 
 
     radio_pesquisa1 = Radiobutton(tela_pesquisa)
-    radio_pesquisa1.config(text='ID', font='Time 10 bold', fg="black", bg="#1d475d", variable=radioValue, value= 1)
+    radio_pesquisa1.config(text='ID', font='Time 10 bold', fg="black", bg="#D3D3D3", variable=radioValue, value= 1)
     radio_pesquisa1.place(x=2, y=100)
 
     radio_pesquisa2 = Radiobutton(tela_pesquisa, )
-    radio_pesquisa2.config(text='Título', font='Time 10 bold', fg="black", bg="#1d475d", variable= radioValue, value= 2)
+    radio_pesquisa2.config(text='Título', font='Time 10 bold', fg="black", bg="#D3D3D3", variable= radioValue, value= 2)
     radio_pesquisa2.place(x=60, y=100)
 
     radio_pesquisa3 = Radiobutton(tela_pesquisa)
-    radio_pesquisa3.config(text='Autor',font='Time 10 bold',fg="black",bg="#1d475d",variable=radioValue,value= 3)
+    radio_pesquisa3.config(text='Autor',font='Time 10 bold',fg="black",bg="#D3D3D3",variable=radioValue,value= 3)
     radio_pesquisa3.place(x=128, y=100) 
 
     #Entrada da pesquisas
@@ -168,10 +252,10 @@ def criar_tela_pesquisa():
     botao_limpar = Button(tela_pesquisa, text='Limpar',font='Time 10 bold', command=limpar)
     botao_limpar.place(x=392,y=70)
 
-    botao_mostrar_tudo = Button(tela_pesquisa, text="MOSTRAR TUDO", font='Time 10 bold', width=22, fg="#ed823b", command=mostrar_tudo)
+    botao_mostrar_tudo = Button(tela_pesquisa, text="MOSTRAR TUDO", font='Time 10 bold', width=22, command=mostrar_tudo)
     botao_mostrar_tudo.place(x=2, y=380)
 
-    botao_selecionar = Button(tela_pesquisa, text= 'SELECIONAR', font="Time 10 bold", width=20, command=selecionar)
+    botao_selecionar = Button(tela_pesquisa, text= 'SELECIONAR', font="Time 10 bold", width=20, command=tela_edicao)
     botao_selecionar.place(x=280, y=380)
 
     botao_fechar = Button(tela_pesquisa, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(tela_pesquisa))
@@ -179,12 +263,27 @@ def criar_tela_pesquisa():
 
 #Função responsável por cadastrar o livro num dicionario e escrever as informações do mesmo no arquivo
 def cadastrar():
+
     arquivo_livro = open('livros.txt','a')
     if id_livro.get() in dic_livros:
         messagebox.showinfo("Ops!","Livro já registrado.")
+
         sair(janela_cadastro)
-    elif id_livro.get() == "" or nome_livro.get() == "" or ano_livro.get() == "" or autor_livro == "":
+    elif id_livro.get() == "" or nome_livro.get() == "" or ano_livro.get() == "" :
         messagebox.showerror("Ops!","Preencha todos os campos.")
+
+    elif autor_livro.get() == "":
+        dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), "desconhecido"]
+        dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido"]
+        dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido"]
+        lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), "desconhecido"])
+        arquivo_livro.write(id_livro.get().lower()+",")
+        arquivo_livro.write(nome_livro.get().lower()+",")
+        arquivo_livro.write(ano_livro.get().lower()+",")
+        arquivo_livro.write("desconhecido"+"\n")
+        messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
+        sair(janela_cadastro)
+
     else:
         dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower()]
         dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower()]
@@ -209,42 +308,47 @@ def criar_tela_cadastro():
 
     janela_cadastro = Toplevel()
     janela_cadastro.geometry("480x480+641+0")
-    janela_cadastro.config(bg="#1d475d")
+    janela_cadastro.config(bg="#D3D3D3")
     janela_cadastro.resizable(FALSE,FALSE)
 
-    fundo_tela_casdastro = Label(janela_cadastro, width=66, height=15 ,borderwidth=4, relief='groove')
-    fundo_tela_casdastro.place(x=-20, y=71)
+    fundo_tela_cadastro = Label(janela_cadastro, width=66, height=15 ,borderwidth=4, relief='groove')
+    fundo_tela_cadastro.place(x=-20, y=71)
 
     label_texto_pes = Label(janela_cadastro)
-    label_texto_pes.config(bg="#1d475d", fg="white", text='Todo os itens que possuem ( * ) são obrigatórios', width=50, height=1)
-    label_texto_pes.place(x=140,y=310)
+    label_texto_pes.config(bg="#D3D3D3",
+                        font= "Arial 7",
+                        fg="black",
+                        text='Todo os itens que possuem ( * ) são obrigatórios \n Caso o autor não seja preenchido \n será considerado Desconhecido',
+                        width=50,
+                        height=3)
+    label_texto_pes.place(x=190,y=310)
 
-    titulo_tela = Label(janela_cadastro, text= '__Cadastro de Livros__')
-    titulo_tela.config(font='Impact 18',fg='#1d475d', width=37, height=2, bg="#ed823b", relief='groove')
-    titulo_tela.place(x=0, y=0)
+    titulo_tela = Label(janela_cadastro, text= 'CADASTRAR LIVROS')
+    titulo_tela.config(font='Arial 18 bold',fg='#1d475d', width=37, height=2, bg="white", relief='groove')
+    titulo_tela.place(x=-35, y=0)
 
     #Entradas do usuario que serão salvas no dicionário
-    label_id = Label(janela_cadastro, width=15, text='* ID(Identificador)', font="Times 12",fg="black")
-    label_id.place(x=-11,y=80)
+    label_id = Label(janela_cadastro, width=15, text='* ISBN', font="Arial 9",fg="black")
+    label_id.place(x=-35,y=80)
     id_livro = Entry(janela_cadastro, width=30)
     id_livro.place(x=2, y=100)
 
-    label_nome = Label(janela_cadastro, width=10, height=1, text='* NOME',font="Times 12 bold",fg="black")
-    label_nome.place(x=-16,y=130)
+    label_nome = Label(janela_cadastro, width=10, height=1, text='* Nome',font="Arial 9",fg="black")
+    label_nome.place(x=-15,y=130)
     nome_livro = Entry(janela_cadastro, width=30)
     nome_livro.place(x=2, y=150)
 
-    label_ano = Label(janela_cadastro, width=10, height=1 ,text='* ANO',font="Times 12 bold",fg="black")
-    label_ano.place(x=-23,y=180)
+    label_ano = Label(janela_cadastro, width=10, height=1 ,text='* Ano',font="Arial 9",fg="black")
+    label_ano.place(x=-22,y=180)
     ano_livro = Entry(janela_cadastro, width=30)
     ano_livro.place(x=2, y=200)
 
-    label_autor = Label(janela_cadastro, width=10, height=1, text='* AUTOR',font="Times 12 bold",fg="black")
-    label_autor.place(x=-13,y=230)
+    label_autor = Label(janela_cadastro, width=10, height=1, text='Autor',font="Arial 9",fg="black")
+    label_autor.place(x=-19,y=230)
     autor_livro = Entry(janela_cadastro, width=30)
     autor_livro.place(x=2, y=250)
 
-    botao_cadastrar = Button(janela_cadastro,text="CADASTRAR", width= 25, font='Times 10 bold',command=cadastrar, fg="#ed823b")
+    botao_cadastrar = Button(janela_cadastro,text="CADASTRAR", width= 22, font='Arial 10 bold',command=cadastrar)
     botao_cadastrar.place(x=2, y=310)
 
     botao_fechar = Button(janela_cadastro, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(janela_cadastro))
