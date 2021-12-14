@@ -12,15 +12,22 @@ dic_titulo = {}
 dic_autor = {}
 lista_autor = [] # Lista para a busca de autores 
 dic_cliente = {}
+lista_cliente = []
 lista_livros = []
 
 
 #adicionando as informações do arquivo no dicionario
-arquivo_livro = open('livros.txt','r')
+arquivo_livro = open("livros.txt","r")
+arquivo_cliente = open("cliente.txt","r")
 for linha in arquivo_livro:
     linha = linha.strip()
     lista_livros.append(linha)
 arquivo_livro.close()
+
+for linha in arquivo_cliente:
+    linha = linha.strip()
+    lista_cliente.append(linha)
+arquivo_cliente.close()
 
 auxiliar = 0
 for livro in lista_livros:
@@ -34,6 +41,15 @@ for livro in lista_livros:
     dic_autor [lista_separada[3].lower()] = info_titulo_autor
     lista_autor.append(info_titulo_autor)
     auxiliar += 1
+
+auxiliar_cliente = 0
+for cliente in lista_cliente:
+    lista_sep_cliente = (lista_cliente[auxiliar_cliente].split(","))
+    info_cliente = [lista_sep_cliente[0].lower(), lista_sep_cliente[1].lower(), lista_sep_cliente[2].lower(), lista_sep_cliente[3].lower(),
+                    lista_sep_cliente[4].lower(), lista_sep_cliente[5].lower(), lista_sep_cliente[6].lower(), lista_sep_cliente[7].lower(),
+                    lista_sep_cliente[8].lower()]
+    dic_cliente[lista_sep_cliente[0].lower()] = info_cliente
+    auxiliar_cliente += 1
 
 #botão para fechar a tela
 def sair(tela):
@@ -189,6 +205,9 @@ def selecionar():
     selected = tv.focus()
     selecionados = tv.item(selected, 'values')
     print(selecionados)
+
+def cadastrar_cliente():
+    arquivo_cliente = open("cliente.txt","a")
 
 
 def criar_tela_cliente():
