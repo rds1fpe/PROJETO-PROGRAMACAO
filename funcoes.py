@@ -1,3 +1,4 @@
+from io import TextIOWrapper
 from tkinter import*
 from tkinter import ttk
 from tkinter import font
@@ -14,6 +15,9 @@ lista_autor = [] # Lista para a busca de autores
 dic_cliente = {}
 lista_cliente = []
 lista_livros = []
+lista_numeros = []
+lista_email = []
+dic_endereco = {}
 
 
 #adicionando as informações do arquivo no dicionario
@@ -49,20 +53,22 @@ for cliente in lista_cliente:
                     lista_sep_cliente[4].lower(), lista_sep_cliente[5].lower(), lista_sep_cliente[6].lower(), lista_sep_cliente[7].lower(),
                     lista_sep_cliente[8].lower()]
     dic_cliente[lista_sep_cliente[0].lower()] = info_cliente
+    lista_numeros.append(lista_sep_cliente[3])
+    lista_email.append(lista_sep_cliente[2])
     auxiliar_cliente += 1
-
+print(dic_cliente)
 #botão para fechar a tela
 def sair(tela):
     tela.destroy()
 
 #Limpa a pesquisa
-def limpar():
+def limpar(tv):
     for item in tv.get_children():
         tv.delete(item)
 
 #mostra todos os livros cadastrados na tela de pesquisa
 def mostrar_tudo():
-    limpar()
+    limpar(tv)
     for item in dic_livros:
         tv.insert("","end", values=(item,
         dic_livros[item][0],
@@ -80,7 +86,7 @@ def mostrar_tudo():
 #Compara a entrada do Entry com o item no dicionário, se True, retorna as informações dos livros
 def pesquisar():
     #Limpa a pesquisa antes de mostrar um novo resultado
-    limpar()
+    limpar(tv)
 
     if radioValue.get() == 1:
         if  entrada_pesquisa.get() == "":
@@ -131,6 +137,7 @@ def criar_tela_pesquisa():
     global tv
     global entrada_pesquisa
     global radioValue
+
 
     tela_pesquisa = Toplevel()
     tela_pesquisa.geometry("480x480+641+0")
@@ -189,7 +196,7 @@ def criar_tela_pesquisa():
     botao_pesquisa = Button(tela_pesquisa, text='Pesquisa', font='Times 10 bold', command=pesquisar)
     botao_pesquisa.place(x=200,y=70)
 
-    botao_limpar = Button(tela_pesquisa, text='Limpar',font='Time 10 bold', command=limpar)
+    botao_limpar = Button(tela_pesquisa, text='Limpar',font='Time 10 bold', command=lambda:limpar(tv))
     botao_limpar.place(x=392,y=70)
 
     botao_mostrar_tudo = Button(tela_pesquisa, text="MOSTRAR TUDO", font='Arial 10 bold', width=22, fg="black", command=mostrar_tudo)
@@ -207,10 +214,89 @@ def selecionar():
     print(selecionados)
 
 def cadastrar_cliente():
+    
     arquivo_cliente = open("cliente.txt","a")
+    print(dic_cliente)
+
+    if entry_cpf.get() in dic_cliente:
+        continuar = messagebox.askquestion("Continuar?", "Cliente já possui cadastro, deseja prosseguir?")
+        if continuar == "yes":
+            tela_cliente.destroy()
+            criar_tela_venda()
+            
+    
+    elif entry_email.get() in lista_email:
+        messagebox.showerror("Ops!", "E-mail já cadastrado")
+        #Implementar usuário associado e este e-mail
+
+    elif entry_numero.get() in lista_numeros:
+        messagebox.showerror("Ops!", "Número já cadastrado")
+        #Implementar usuário associado a este número
+
+    elif entry_cpf.get() == "" or entry_nome.get() == "" or entry_email.get() == "" or entry_numero.get() == "" or sexo_cliente.get == "" or combo_dia.get() == "" or combo_mes.get() == "" or combo_ano.get() == "" or entry_estado.get() == "":
+        messagebox.showerror("Ops!", "Para continuar preencha todos os campos obrigatórios.")
+
+    else:
+        dic_cliente[entry_cpf.get()] = [entry_nome.get(), entry_email.get(), entry_numero.get(), sexo_cliente.get(),
+                                        combo_dia.get(), combo_mes.get(), combo_ano.get(), entry_estado.get()]
+        lista_email.append(entry_email.get())
+        lista_numeros.append(entry_numero.get())
+        dic_endereco[entry_endereco.get()] = [entry_endereco.get(), entry_num.get()]
+
+        arquivo_cliente.write(entry_cpf.get()+",")
+        arquivo_cliente.write(entry_nome.get()+",")
+        arquivo_cliente.write(entry_email.get()+",")
+        arquivo_cliente.write(entry_numero.get()+",")
+        arquivo_cliente.write(sexo_cliente.get()+",")
+        arquivo_cliente.write(combo_dia.get()+",")
+        arquivo_cliente.write(combo_mes.get()+",")
+        arquivo_cliente.write(combo_ano.get()+",")
+        arquivo_cliente.write(entry_estado.get()+"\n")
+    arquivo_cliente.close()
+
+
+def pesquisar_cliente():
+    if entry_pesquisa.get() in dic_cliente:
+        tv_cliente.insert("","end", values=(dic_cliente[entry_pesquisa.get()][1], dic_cliente[entry_pesquisa.get()][3], dic_cliente[entry_pesquisa.get()][2]))
+    
+    elif entry_pesquisa.get() == "":
+        messagebox.showinfo("Ops!", "Para pesqusiar preencha o campo necessário")
+
+    else:
+        ask_cliente = messagebox.askquestion("Ops!", "Cliente não encontrado, deseja adicionar?")
+        if ask_cliente == "yes":
+            entry_cpf['state'] = NORMAL
+            entry_nome['state'] = NORMAL
+            entry_email['state'] = NORMAL
+            entry_numero['state'] = NORMAL
+            sexo_cliente['state'] = NORMAL
+            combo_dia['state'] = NORMAL
+            combo_mes['state'] = NORMAL
+            combo_ano['state'] = NORMAL
+            entry_endereco['state'] = NORMAL
+            entry_num['state'] = NORMAL
+            entry_estado['state'] = NORMAL
+            botao_salvar['state'] = NORMAL
+
 
 
 def criar_tela_cliente():
+
+    global entry_cpf
+    global entry_nome
+    global entry_email
+    global entry_numero
+    global sexo_cliente
+    global combo_dia
+    global combo_mes
+    global combo_ano
+    global entry_estado
+    global entry_endereco
+    global entry_num
+    global tela_cliente
+    global tv_cliente
+    global entry_pesquisa
+    global botao_salvar
     
     tela_cliente = Toplevel()
     tela_cliente.geometry("480x480+641+0")
@@ -221,26 +307,57 @@ def criar_tela_cliente():
     titulo_tela_cli.config(font='Arial 18 bold',fg='black', width=37, height=2, bg="white")
     titulo_tela_cli.place(x=-35, y=0)
 
-    main_label_cli = Label(tela_cliente, width=65, height=20, relief="groove")
-    main_label_cli.place(x=10, y=71)
+    label_texto_cli = Label(tela_cliente)
+    label_texto_cli.config(bg="#D3D3D3", fg="black", font='Arial 8', text='Todo os itens que possuem ( * ) são obrigatórios', width=50, height=1)
+    label_texto_cli.place(x=170,y=440)
+
+    main_label_cli = Label(tela_cliente, width=65, height=23, relief="groove")
+    main_label_cli.place(x=10, y=65)
+
+    #Entry e treeview para pesquisar e mostrar clientes
+    entry_pesquisa = Entry(main_label_cli,width=30)
+    entry_pesquisa.place(x=5, y=20, height=27)
+
+    label_pesquisa = Label(main_label_cli, text="Pesquisar Cliente(Digite o CPF)", font="Arial 8")
+    label_pesquisa.place(x=5, y=0)
+
+    tv_cliente = ttk.Treeview(main_label_cli)
+    tv_cliente.config(columns=('Nome','Número','Email'),show='headings', selectmode=BROWSE, height=1)
+    tv_cliente.column('Nome',minwidth=0, width=145)
+    tv_cliente.column('Número',minwidth=0, width=100) 
+    tv_cliente.column('Email',minwidth=0, width=191) 
+
+    tv_cliente.heading('Nome', text='Nome')
+    tv_cliente.heading('Número', text='Número')
+    tv_cliente.heading('Email', text='Email')
+    tv_cliente.place(x=5, y=55)
+
+    style_tvc = ttk.Style()
+    style_tvc.theme_use("clam")
+    style_tvc.configure("TreeView")
 
     #Entry e Combobox para obter os dados do cliente
     entry_cpf = Entry(main_label_cli, width=30)
-    entry_cpf.place(x=10, y=35)
+    entry_cpf['state'] = DISABLED
+    entry_cpf.place(x=10, y=135)
 
     entry_nome = Entry(main_label_cli, width=30)
-    entry_nome.place(x=260, y=35)
+    entry_nome['state'] = DISABLED
+    entry_nome.place(x=260, y=135)
 
     entry_email = Entry(main_label_cli, width=30)
-    entry_email.place(x=10, y=95)
+    entry_email['state'] = DISABLED
+    entry_email.place(x=10, y=195)
 
     entry_numero = Entry(main_label_cli, width=30)
-    entry_numero.place(x=260, y=95)
+    entry_numero['state'] = DISABLED
+    entry_numero.place(x=260, y=195)
 
     selected_combo_sexo = StringVar()
     values_combo = ["Masculino","Feminino"]
     sexo_cliente = ttk.Combobox(main_label_cli, width=27, values=values_combo)
-    sexo_cliente.place(x= 10, y=155)
+    sexo_cliente['state'] = DISABLED
+    sexo_cliente.place(x= 10, y=255)
 
     selected_combo_dia = StringVar()
     values_dia = []
@@ -248,46 +365,61 @@ def criar_tela_cliente():
         values_dia.append(x)
 
     combo_dia = ttk.Combobox(main_label_cli, width=3, values=values_dia)
-    combo_dia.place(x=260, y=155)
+    combo_dia['state'] = DISABLED
+    combo_dia.place(x=260, y=255)
 
     selected_combo_mes = StringVar()
-    values_mes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
+    values_mes = ["Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
     combo_mes = ttk.Combobox(main_label_cli, width=9, values=values_mes)
-    combo_mes.place(x=308, y=155)
+    combo_mes['state'] = DISABLED
+    combo_mes.place(x=308, y=255)
 
     selected_combo_ano = StringVar()
     values_ano = []
     for x in range(1900,2021):
         values_ano.append(x)
     combo_ano = ttk.Combobox(main_label_cli, width=5, values=values_ano)
-    combo_ano.place(x=390, y=155)
+    combo_ano['state'] = DISABLED
+    combo_ano.place(x=390, y=255)
 
     entry_endereco = Entry(main_label_cli, width=50)
-    entry_endereco.place(x=10, y=215)
+    entry_endereco['state'] = DISABLED
+    entry_endereco.place(x=10, y=315)
 
-    entry_numero = Entry(main_label_cli, width=5)
-    entry_numero.place(x=330, y=215)
+    entry_num = Entry(main_label_cli, width=5)
+    entry_num['state'] = DISABLED
+    entry_num.place(x=330, y=315)
 
     selected_combo_estado = StringVar()
     values_estados = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"]
     entry_estado = ttk.Combobox(main_label_cli, width=5, values=values_estados)
-    entry_estado.place(x=400, y=215, height=20)
+    entry_estado['state'] = DISABLED
+    entry_estado.place(x=390, y=315, height=20)
 
-    label_cpf = Label(main_label_cli, text="* CPF").place(x=5,y=13)
-    label_nome = Label(main_label_cli, text="* Nome").place(x=260, y=13)
-    label_email = Label(main_label_cli, text="* E-mail").place(x=5, y=73)
-    label_numero = Label(main_label_cli, text="* Número").place(x=260, y=73)
-    label_sexo = Label(main_label_cli, text="* Sexo").place(x=5, y=133)
-    label_dma = Label(main_label_cli, text="* Data de Nascimento DD/MM/AAAA", font="Arial 8").place(x=258, y=133)
-    label_endereco = Label(main_label_cli, text="* Endereço").place(x=5, y=193)
-    label_n = Label(main_label_cli, text="* N°").place(x=325, y=193)
-    label_uf = Label(main_label_cli, text="* UF").place(x=395, y=193)
+    label_cpf = Label(main_label_cli, text="* CPF").place(x=5,y=113)
+    label_nome = Label(main_label_cli, text="* Nome").place(x=260, y=113)
+    label_email = Label(main_label_cli, text="* E-mail").place(x=5, y=173)
+    label_numero = Label(main_label_cli, text="* Número").place(x=260, y=173)
+    label_sexo = Label(main_label_cli, text="* Sexo").place(x=7, y=233)
+    label_dma = Label(main_label_cli, text="* Data de Nascimento DD/MM/AAAA", font="Arial 8").place(x=258, y=233)
+    label_endereco = Label(main_label_cli, text="Endereço").place(x=8, y=293)
+    label_n = Label(main_label_cli, text="N°").place(x=328, y=293)
+    label_uf = Label(main_label_cli, text="* UF").place(x=390, y=293)
 
-    botao_salvar = Button(tela_cliente, text="SALVAR",font="Arial 9 bold" , width=22)
-    botao_salvar.place(x=10, y=380)
+    botao_pesquisar = Button(main_label_cli, text="BUSCAR",font="Arial 9 bold", command=pesquisar_cliente)
+    botao_pesquisar.place(x=200, y=20)
+
+    botao_limpar = Button(main_label_cli, text="LIMPAR", font="Arial 9", command=lambda:limpar(tv_cliente))
+    botao_limpar.place(x=390, y=20)
+
+    botao_salvar = Button(tela_cliente, text="SALVAR",font="Arial 9 bold" , width=22, command=cadastrar_cliente)
+    botao_salvar['state'] = DISABLED
+    botao_salvar.place(x=10, y=420)
 
     botao_voltar = Button(tela_cliente, text="VOLTAR", width=22, command=lambda:sair(tela_cliente))
-    botao_voltar.place(x=10, y=420)
+    botao_voltar.place(x=10, y=450)
+
+
 
 
 
@@ -384,7 +516,11 @@ def criar_tela_cadastro():
     botao_fechar.place(x=2, y=350)
     
 
-    
+def criar_tela_venda():
+
+    janela_venda = Toplevel()
+    janela_venda.geometry("480x480+641+0")
+    janela_venda.resizable(0, 0)  
     
 
 
