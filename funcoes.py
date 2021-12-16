@@ -38,8 +38,8 @@ for livro in lista_livros:
     #criando uma lista separando cada item por virgula(arquivo separado por virgula no arquivo)
     lista_separada = (lista_livros[auxiliar].split(","))
     #lista onde cada item é uma informação do livro
-    info_id = [lista_separada[1].lower(), lista_separada[2], lista_separada[3].lower()]
-    info_titulo_autor = [lista_separada[0].lower(),lista_separada[1].lower(), lista_separada[2], lista_separada[3].lower()] 
+    info_id = [lista_separada[1].lower(), lista_separada[2], lista_separada[3].lower(), lista_separada[4]]
+    info_titulo_autor = [lista_separada[0].lower(),lista_separada[1].lower(), lista_separada[2], lista_separada[3].lower(), lista_separada[4]] 
     dic_livros[lista_separada[0].lower()] = info_id
     dic_titulo[lista_separada[1].lower()] = info_titulo_autor
     dic_autor [lista_separada[3].lower()] = info_titulo_autor
@@ -73,7 +73,8 @@ def mostrar_tudo():
         tv.insert("","end", values=(item,
         dic_livros[item][0],
         dic_livros[item][1],
-        dic_livros[item][2]))
+        dic_livros[item][2],
+        dic_livros[item][3]))
     sep = 100*("-")
     print(dic_livros)
     print(sep)
@@ -88,7 +89,10 @@ def pesquisar():
     #Limpa a pesquisa antes de mostrar um novo resultado
     limpar(tv)
 
-    if radioValue.get() == 1:
+    if entrada_pesquisa.get() == "":
+        messagebox.showerror("Ops!", "Digite o ISBN, Título ou Autor do livro que deseja pesquisar")
+
+    elif radioValue.get() == 1:
         if  entrada_pesquisa.get() == "":
             messagebox.showerror("Ops!", "Digite o ISBN do livro que deseja pesquisar")
 
@@ -96,7 +100,8 @@ def pesquisar():
             tv.insert("","end", values=(entrada_pesquisa.get().lower(), #inserindo ID na grade
             dic_livros[entrada_pesquisa.get().lower()][0], #inserindo Título na grande
             dic_livros[entrada_pesquisa.get().lower()][1], #inserindo Ano na grade
-            dic_livros[entrada_pesquisa.get().lower()][2]))#inserindo Autor na grade
+            dic_livros[entrada_pesquisa.get().lower()][2],#inserindo Autor na grade
+            dic_livros[entrada_pesquisa.get().lower()][3]))#inserindo quantidade na grade
         else:
             messagebox.showerror("Ops!","Livro não encontrado!")
     
@@ -109,7 +114,8 @@ def pesquisar():
             tv.insert("","end", values=(dic_titulo[entrada_pesquisa.get().lower()][0], # inserindo ID na grade
             dic_titulo[entrada_pesquisa.get().lower()][1], #inserindo Título na grade
             dic_titulo[entrada_pesquisa.get().lower()][2], #inserindo ano na grade
-            dic_titulo[entrada_pesquisa.get().lower()][3])) #inserindo autor na grade
+            dic_titulo[entrada_pesquisa.get().lower()][3], #inserindo autor na grade
+            dic_titulo[entrada_pesquisa.get().lower()][4]))#insetindo quantidade na grade
         else:
             messagebox.showerror("Ops!","Livro não encontrado!")
 
@@ -127,7 +133,8 @@ def pesquisar():
                     tv.insert("","end", values=(lista_autor[aux_autor][0].lower(), # inserindo ID na grade
                     lista_autor[aux_autor][1], #inserindo Título na grade
                     lista_autor[aux_autor][2], #inserindo ano na grade
-                    lista_autor[aux_autor][3])) #inserindo autor na grade
+                    lista_autor[aux_autor][3], #inserindo autor na grade
+                    lista_autor[aux_autor][4]))
             
                 aux_autor += 1
 
@@ -137,6 +144,7 @@ def criar_tela_pesquisa():
     global tv
     global entrada_pesquisa
     global radioValue
+    global tela_pesquisa
 
 
     tela_pesquisa = Toplevel()
@@ -148,24 +156,37 @@ def criar_tela_pesquisa():
     titulo_tela_pes.config(font='Arial 18 bold',fg='black', width=37, height=2, bg="white")
     titulo_tela_pes.place(x=-30, y=0)
 
+    main_label_livro = Label(tela_pesquisa, width=65, height=25, relief="groove")
+    main_label_livro.place(x=10, y=65)
+
+    #Label pesquisa
+    label_pesquisa = Label(main_label_livro, text="* ISBN")
+    label_pesquisa.place(x=2, y=0)
+
+    #Entrada da pesquisas
+    entrada_pesquisa = Entry(main_label_livro, width=30)
+    entrada_pesquisa.place(x=5, y=20, height= 25)
+
     #Criando janela para visualização do conteudo em grade(TREEVIEW)
-    tv=ttk.Treeview(tela_pesquisa,columns=('ID','Título','Ano','Autor'),show='headings', selectmode=BROWSE)
+    tv=ttk.Treeview(main_label_livro,columns=('ISBN','Título','Ano','Autor','Qntd'),show='headings', selectmode=BROWSE)
     #Scrollbar para facilitar a visualização do conteudo dentro do TreeView
-    scroll_tv = Scrollbar(tv, orient='vertical', command=tv.yview)
-    scroll_tv.place(x=430, y=30 ,height=190)
+    scroll_tv = Scrollbar(main_label_livro, orient='vertical', command=tv.yview)
+    scroll_tv.place(x=432, y=125 ,height=200)
     tv.configure(yscrollcommand=scroll_tv.set)
 
     #Definições das colunas da grade
-    tv.column('ID',minwidth=0, width=80)
-    tv.column('Título',minwidth=0, width=190) 
+    tv.column('ISBN',minwidth=0, width=80)
+    tv.column('Título',minwidth=0, width=130) 
     tv.column('Ano',minwidth=0, width=55) 
-    tv.column('Autor',minwidth=0, width=121) 
+    tv.column('Autor',minwidth=0, width=121)
+    tv.column('Qntd', minwidth=0, width=40) 
 
-    tv.heading('ID', text='ID')
+    tv.heading('ISBN', text='ISBN')
     tv.heading('Título', text='Título')
     tv.heading('Ano', text='Ano')
     tv.heading('Autor', text='Autor')
-    tv.place(x=0, y=150)
+    tv.heading('Qntd', text='Qntd')
+    tv.place(x=2, y=100)
 
     #Estilo da TreeView
     style_tv = ttk.Style()
@@ -177,41 +198,52 @@ def criar_tela_pesquisa():
     #Variável responsável por obter o valor do RadioButton
     radioValue = IntVar(tela_pesquisa) 
 
-    radio_pesquisa1 = Radiobutton(tela_pesquisa)
-    radio_pesquisa1.config(text='ID', font='Arial 10 bold', fg="black", bg="#D3D3D3", variable=radioValue, value= 1)
-    radio_pesquisa1.place(x=2, y=100)
+    radio_pesquisa1 = Radiobutton(main_label_livro)
+    radio_pesquisa1.config(text='ISBN', font='Arial 10 bold', fg="black",  variable=radioValue, value= 1)
+    radio_pesquisa1.place(x=2, y=50)
 
-    radio_pesquisa2 = Radiobutton(tela_pesquisa, )
-    radio_pesquisa2.config(text='Título', font='Arial 10 bold', fg="black", bg="#D3D3D3", variable= radioValue, value= 2)
-    radio_pesquisa2.place(x=60, y=100)
+    radio_pesquisa2 = Radiobutton(main_label_livro, )
+    radio_pesquisa2.config(text='Título', font='Arial 10 bold', fg="black", variable= radioValue, value= 2)
+    radio_pesquisa2.place(x=60, y=50)
 
-    radio_pesquisa3 = Radiobutton(tela_pesquisa)
-    radio_pesquisa3.config(text='Autor',font='Arial 10 bold',fg="black",bg="#D3D3D3",variable=radioValue,value= 3)
-    radio_pesquisa3.place(x=128, y=100) 
+    radio_pesquisa3 = Radiobutton(main_label_livro)
+    radio_pesquisa3.config(text='Autor',font='Arial 10 bold',fg="black", variable=radioValue,value= 3)
+    radio_pesquisa3.place(x=128, y=50) 
 
-    #Entrada da pesquisas
-    entrada_pesquisa = Entry(tela_pesquisa, width=30)
-    entrada_pesquisa.place(x=2, y=70, height= 25)
+    botao_pesquisa = Button(main_label_livro, text='Pesquisar', font='Times 10 bold', command=pesquisar)
+    botao_pesquisa.place(x=200,y=20)
 
-    botao_pesquisa = Button(tela_pesquisa, text='Pesquisa', font='Times 10 bold', command=pesquisar)
-    botao_pesquisa.place(x=200,y=70)
+    botao_limpar = Button(main_label_livro, text='Limpar',font='Time 10 bold', command=lambda:limpar(tv))
+    botao_limpar.place(x=374,y=20)
 
-    botao_limpar = Button(tela_pesquisa, text='Limpar',font='Time 10 bold', command=lambda:limpar(tv))
-    botao_limpar.place(x=392,y=70)
+    botao_mostrar_tudo = Button(main_label_livro, text="MOSTRAR TUDO", font='Arial 10 bold', width=22, fg="black", command=mostrar_tudo)
+    botao_mostrar_tudo.place(x=2, y=340)
 
-    botao_mostrar_tudo = Button(tela_pesquisa, text="MOSTRAR TUDO", font='Arial 10 bold', width=22, fg="black", command=mostrar_tudo)
-    botao_mostrar_tudo.place(x=2, y=380)
-
-    botao_selecionar = Button(tela_pesquisa, text= 'SELECIONAR', font="Arial 10 bold", width=20, command=selecionar)
-    botao_selecionar.place(x=280, y=380)
+    botao_selecionar = Button(main_label_livro, text= 'SELECIONAR', font="Arial 10 bold", width=20, command=selecionar)
+    botao_selecionar.place(x=262, y=340)
 
     botao_fechar = Button(tela_pesquisa, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(tela_pesquisa))
-    botao_fechar.place(x=2, y=420)
+    botao_fechar.place(x=15, y=450)
 
 def selecionar():
+    global selecionados
     selected = tv.focus()
     selecionados = tv.item(selected, 'values')
-    print(selecionados)
+    if selected:
+        ask = messagebox.askquestion("Continuar?","Livro selecionado, deseja abrir tela de cadastro de cliente?")
+        if ask == "yes":
+            print("Livro Selecionado: "+ selecionados[1])
+            sair(tela_pesquisa)
+            criar_tela_cliente()
+
+def avancar():
+    selected_venda = tv_cliente.focus()
+    cliente_selecionado = tv_cliente.item(selected_venda, 'values')
+    if selected_venda:       
+        ask2 = messagebox.askquestion("Continuar?", "Deseja prosseguir para locação?")
+        if ask2 == "yes":
+            criar_tela_venda()
+            print("Livro Selecionado: "+ selecionados[1])
 
 def cadastrar_cliente():
     
@@ -237,30 +269,55 @@ def cadastrar_cliente():
         messagebox.showerror("Ops!", "Para continuar preencha todos os campos obrigatórios.")
 
     else:
-        dic_cliente[entry_cpf.get()] = [entry_nome.get(), entry_email.get(), entry_numero.get(), sexo_cliente.get(),
-                                        combo_dia.get(), combo_mes.get(), combo_ano.get(), entry_estado.get()]
-        lista_email.append(entry_email.get())
-        lista_numeros.append(entry_numero.get())
-        dic_endereco[entry_endereco.get()] = [entry_endereco.get(), entry_num.get()]
+        dic_cliente[entry_cpf.get()] = [entry_cpf.get().lower(), entry_nome.get().lower(), entry_email.get().lower(), entry_numero.get().lower(), sexo_cliente.get().lower(),
+                                        combo_dia.get().lower(), combo_mes.get().lower(), combo_ano.get().lower(), entry_estado.get().lower()]
+        lista_email.append(entry_email.get().lower())
+        lista_numeros.append(entry_numero.get().lower())
+        dic_endereco[entry_endereco.get().lower()] = [entry_endereco.get().lower(), entry_num.get().lower()]
 
-        arquivo_cliente.write(entry_cpf.get()+",")
-        arquivo_cliente.write(entry_nome.get()+",")
-        arquivo_cliente.write(entry_email.get()+",")
-        arquivo_cliente.write(entry_numero.get()+",")
-        arquivo_cliente.write(sexo_cliente.get()+",")
-        arquivo_cliente.write(combo_dia.get()+",")
-        arquivo_cliente.write(combo_mes.get()+",")
-        arquivo_cliente.write(combo_ano.get()+",")
-        arquivo_cliente.write(entry_estado.get()+"\n")
+        arquivo_cliente.write(entry_cpf.get().lower()+",")
+        arquivo_cliente.write(entry_nome.get().lower()+",")
+        arquivo_cliente.write(entry_email.get().lower()+",")
+        arquivo_cliente.write(entry_numero.get().lower()+",")
+        arquivo_cliente.write(sexo_cliente.get().lower()+",")
+        arquivo_cliente.write(combo_dia.get().lower()+",")
+        arquivo_cliente.write(combo_mes.get().lower()+",")
+        arquivo_cliente.write(combo_ano.get().lower()+",")
+        arquivo_cliente.write(entry_estado.get().lower()+"\n")
+        messagebox.showinfo("Sucesso", "Cliente registrado com sucesso")
+        entry_cpf.delete(0, "end")
+        entry_nome.delete(0, "end")
+        entry_email.delete(0, "end")
+        entry_numero.delete(0, "end")
+        sexo_cliente.delete(0, "end")
+        combo_dia.delete(0, "end")
+        combo_mes.delete(0, "end")
+        combo_ano.delete(0, "end")
+        entry_endereco.delete(0, "end")
+        entry_num.delete(0, "end")
+        entry_estado.delete(0, "end")
+
+        entry_cpf['state'] = DISABLED
+        entry_nome['state'] = DISABLED
+        entry_email['state'] = DISABLED
+        entry_numero['state'] = DISABLED
+        sexo_cliente['state'] = DISABLED
+        combo_dia['state'] = DISABLED
+        combo_mes['state'] = DISABLED
+        combo_ano['state'] = DISABLED
+        entry_endereco['state'] = DISABLED
+        entry_num['state'] = DISABLED
+        entry_estado['state'] = DISABLED
+        botao_salvar['state'] = DISABLED
     arquivo_cliente.close()
 
 
 def pesquisar_cliente():
     if entry_pesquisa.get() in dic_cliente:
-        tv_cliente.insert("","end", values=(dic_cliente[entry_pesquisa.get()][1], dic_cliente[entry_pesquisa.get()][3], dic_cliente[entry_pesquisa.get()][2]))
-    
+        tv_cliente.insert("","end", values=(dic_cliente[entry_pesquisa.get()][1], dic_cliente[entry_pesquisa.get()][2], dic_cliente[entry_pesquisa.get()][3]))
+        botao_avancar['state'] = NORMAL
     elif entry_pesquisa.get() == "":
-        messagebox.showinfo("Ops!", "Para pesqusiar preencha o campo necessário")
+        messagebox.showinfo("Ops!", "Para pesquisar preencha o campo CPF")
 
     else:
         ask_cliente = messagebox.askquestion("Ops!", "Cliente não encontrado, deseja adicionar?")
@@ -297,6 +354,7 @@ def criar_tela_cliente():
     global tv_cliente
     global entry_pesquisa
     global botao_salvar
+    global botao_avancar
     
     tela_cliente = Toplevel()
     tela_cliente.geometry("480x480+641+0")
@@ -318,18 +376,18 @@ def criar_tela_cliente():
     entry_pesquisa = Entry(main_label_cli,width=30)
     entry_pesquisa.place(x=5, y=20, height=27)
 
-    label_pesquisa = Label(main_label_cli, text="Pesquisar Cliente(Digite o CPF)", font="Arial 8")
+    label_pesquisa = Label(main_label_cli, text="* Pesquisar Cliente(Digite o CPF)", font="Arial 8")
     label_pesquisa.place(x=5, y=0)
 
     tv_cliente = ttk.Treeview(main_label_cli)
-    tv_cliente.config(columns=('Nome','Número','Email'),show='headings', selectmode=BROWSE, height=1)
+    tv_cliente.config(columns=('Nome','Email','Número'),show='headings', selectmode=BROWSE, height=1)
     tv_cliente.column('Nome',minwidth=0, width=145)
-    tv_cliente.column('Número',minwidth=0, width=100) 
     tv_cliente.column('Email',minwidth=0, width=191) 
+    tv_cliente.column('Número',minwidth=0, width=100) 
 
     tv_cliente.heading('Nome', text='Nome')
-    tv_cliente.heading('Número', text='Número')
     tv_cliente.heading('Email', text='Email')
+    tv_cliente.heading('Número', text='Número')
     tv_cliente.place(x=5, y=55)
 
     style_tvc = ttk.Style()
@@ -399,7 +457,7 @@ def criar_tela_cliente():
     label_cpf = Label(main_label_cli, text="* CPF").place(x=5,y=113)
     label_nome = Label(main_label_cli, text="* Nome").place(x=260, y=113)
     label_email = Label(main_label_cli, text="* E-mail").place(x=5, y=173)
-    label_numero = Label(main_label_cli, text="* Número").place(x=260, y=173)
+    label_numero = Label(main_label_cli, text="* Celular").place(x=260, y=173)
     label_sexo = Label(main_label_cli, text="* Sexo").place(x=7, y=233)
     label_dma = Label(main_label_cli, text="* Data de Nascimento DD/MM/AAAA", font="Arial 8").place(x=258, y=233)
     label_endereco = Label(main_label_cli, text="Endereço").place(x=8, y=293)
@@ -409,8 +467,12 @@ def criar_tela_cliente():
     botao_pesquisar = Button(main_label_cli, text="BUSCAR",font="Arial 9 bold", command=pesquisar_cliente)
     botao_pesquisar.place(x=200, y=20)
 
+    botao_avancar = Button(main_label_cli, text = "AVANÇAR", font="Arial 9 bold", command=avancar)
+    botao_avancar['state'] = DISABLED
+    botao_avancar.place(x=377, y=20)
+
     botao_limpar = Button(main_label_cli, text="LIMPAR", font="Arial 9", command=lambda:limpar(tv_cliente))
-    botao_limpar.place(x=390, y=20)
+    botao_limpar.place(x=270, y=20)
 
     botao_salvar = Button(tela_cliente, text="SALVAR",font="Arial 9 bold" , width=22, command=cadastrar_cliente)
     botao_salvar['state'] = DISABLED
@@ -420,44 +482,43 @@ def criar_tela_cliente():
     botao_voltar.place(x=10, y=450)
 
 
-
-
-
-
-
-
-
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 #Função responsável por cadastrar o livro num dicionario e escrever as informações do mesmo no arquivo
 def cadastrar():
     arquivo_livro = open('livros.txt','a')
     if id_livro.get() in dic_livros:
         messagebox.showinfo("Ops!","Livro já registrado.")
         sair(janela_cadastro)
-    elif id_livro.get() == "" or nome_livro.get() == "" or ano_livro.get() == "":
-        messagebox.showerror("Ops!","Preencha todos os campos.")
+    
+    elif id_livro.get() == "" or nome_livro.get() == "" or ano_livro.get() == "" or qntd_livro.get() == "":
+        messagebox.showerror("Ops!","Preencha todos os campos obrigatórios.")
+
+    elif int(qntd_livro.get()) <= 0:
+        messagebox.showerror("Ops!","A quantidade inserida deve ser maior que 0")
 
     elif autor_livro.get() == "":
-        dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), "desconhecido" ]
-        dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido"]
-        dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido"]
-        lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), "desconhecido"])
+        dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), "desconhecido" , qntd_livro.get()]
+        dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido", qntd_livro.get()]
+        dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido", qntd_livro.get()]
+        lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), "desconhecido", qntd_livro.get()])
         arquivo_livro.write(id_livro.get().lower()+",")
         arquivo_livro.write(nome_livro.get().lower()+",")
         arquivo_livro.write(ano_livro.get().lower()+",")
+        arquivo_livro.wirte(qntd_livro.get()+",")
         arquivo_livro.write("desconhecido"+"\n")
         messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
         sair(janela_cadastro)
         arquivo_livro.close()
 
     else:
-        dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower()]
-        dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower()]
-        dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower()]
-        lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower()])
+        dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), qntd_livro.get()]
+        dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), qntd_livro.get()]
+        dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), qntd_livro.get()]
+        lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), qntd_livro.get()])
         arquivo_livro.write(id_livro.get().lower()+",")
         arquivo_livro.write(nome_livro.get().lower()+",")
         arquivo_livro.write(ano_livro.get().lower()+",")
+        arquivo_livro.write(qntd_livro.get()+",")
         arquivo_livro.write(autor_livro.get().lower()+"\n")
         messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
         sair(janela_cadastro)
@@ -471,49 +532,55 @@ def criar_tela_cadastro():
     global nome_livro
     global ano_livro
     global autor_livro
+    global qntd_livro
 
     janela_cadastro = Toplevel()
     janela_cadastro.geometry("480x480+641+0")
     janela_cadastro.config(bg="#D3D3D3")
     janela_cadastro.resizable(FALSE,FALSE)
 
-    fundo_tela_casdastro = Label(janela_cadastro, width=66, height=15 ,borderwidth=4, relief='groove')
-    fundo_tela_casdastro.place(x=-20, y=71)
-
-    label_texto_pes = Label(janela_cadastro)
-    label_texto_pes.config(bg="#D3D3D3", fg="black", font='Arial 7', text='Todo os itens que possuem ( * ) são obrigatórios', width=50, height=1)
-    label_texto_pes.place(x=145,y=310)
-
     titulo_tela = Label(janela_cadastro, text= 'CADASTRAR LIVRO')
     titulo_tela.config(font='Arial 18 bold',fg='black', width=37, height=2, bg="white", relief='groove')
     titulo_tela.place(x=-30, y=0)
 
+    main_label_cad = Label(janela_cadastro, width=65, height=23, relief="groove")
+    main_label_cad.place(x=10, y=65)
+
+    label_texto_pes = Label(main_label_cad)
+    label_texto_pes.config(fg="black", font='Arial 7', text='Todo os itens que possuem ( * ) são obrigatórios', width=40, height=1)
+    label_texto_pes.place(x=190,y=315)
+
     #Entradas do usuario que serão salvas no dicionário
-    label_id = Label(janela_cadastro, width=15, text='* ISBN', font="Arial 9", fg="black")
-    label_id.place(x=-33,y=80)
-    id_livro = Entry(janela_cadastro, width=30)
-    id_livro.place(x=2, y=100)
+    label_id = Label(main_label_cad, text='* ISBN', font="Arial 9", fg="black")
+    label_id.place(x=0,y=0)
+    id_livro = Entry(main_label_cad, width=30)
+    id_livro.place(x=2, y=20)
 
-    label_nome = Label(janela_cadastro, width=10, height=1, text='* Nome',font="Arial 9", fg="black")
-    label_nome.place(x=-14,y=130)
-    nome_livro = Entry(janela_cadastro, width=30)
-    nome_livro.place(x=2, y=150)
+    label_nome = Label(main_label_cad, text='* Nome',font="Arial 9", fg="black")
+    label_nome.place(x=0,y=60)
+    nome_livro = Entry(main_label_cad, width=30)
+    nome_livro.place(x=2, y=80)
 
-    label_ano = Label(janela_cadastro, width=10, height=1 ,text='* Ano',font="Arial 9", fg="black")
-    label_ano.place(x=-21,y=180)
-    ano_livro = Entry(janela_cadastro, width=30)
-    ano_livro.place(x=2, y=200)
+    label_ano = Label(main_label_cad ,text='* Ano',font="Arial 9", fg="black")
+    label_ano.place(x=0,y=120)
+    ano_livro = Entry(main_label_cad, width=30)
+    ano_livro.place(x=2, y=140)
 
-    label_autor = Label(janela_cadastro, width=10, height=1, text='Autor',font="Arial 9", fg="black")
-    label_autor.place(x=-19,y=230)
-    autor_livro = Entry(janela_cadastro, width=30)
-    autor_livro.place(x=2, y=250)
+    label_autor = Label(main_label_cad,  text='Autor',font="Arial 9", fg="black")
+    label_autor.place(x=0,y=180)
+    autor_livro = Entry(main_label_cad, width=30)
+    autor_livro.place(x=2, y=200)
 
-    botao_cadastrar = Button(janela_cadastro,text="CADASTRAR", width= 22, font='Arial 10 bold',command=cadastrar)
-    botao_cadastrar.place(x=2, y=310)
+    label_qntd = Label(main_label_cad, text="* Quantidade", font="Arial 9")
+    label_qntd.place(x=0, y=240)
+    qntd_livro = Entry(main_label_cad, width=12)
+    qntd_livro.place(x=2, y=260)
+
+    botao_cadastrar = Button(main_label_cad,text="CADASTRAR", width= 22, font='Arial 10 bold',command=cadastrar)
+    botao_cadastrar.place(x=2, y=315)
 
     botao_fechar = Button(janela_cadastro, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(janela_cadastro))
-    botao_fechar.place(x=2, y=350)
+    botao_fechar.place(x=15, y=420)
     
 
 def criar_tela_venda():

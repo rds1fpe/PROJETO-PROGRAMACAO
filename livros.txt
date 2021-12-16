@@ -1,32 +1,43 @@
-17,Gabriela,1997,Cinho Paulista
-1,1,1,1
-2,2,2,2
-3,3,3,3
-11,11,11,11
-22,22,22,22
-33,33,33,33123,213,123,123
-6,6,6,6
-234,234,234,234
-456,456,456,456
-1551,A historia da puta,2021,Capeta
-555,555,5555,555
-654,Curupira,1850,desconhecido
-789,789,789,0
-753,753,753,1
-rett,ertt,ert,6
-fv,fv,fv,fv
-fg,fg,fg,fg
-hn,hn,hn,hn
-fgb,fgb,fgb,hn
-56115841,ToyStory,1996,hn
-dfg,dfg,dfg,hn
-vfd,vfd,vfd,hn
-a,a,a,a
-951,Nove cinco um,1951,NoveCinco
-sdf,sdf,sdf,sdf
-zxc,zxc,zxc,zxc
-ghj,ghj,ghj,ghj
-vbn,vbn,vbn,vbn
-asdfddf,bvgg,dsf,vbn
-dfgdsasdfg,dsfgfgd,dfggdfcvb,cvvc
-cb,vcbvcb,vcbbcv,cvbbcv
+17,Gabriela,1997,Cinho Paulista,2
+1,1,1,1,6
+2,2,2,2,5
+3,3,3,3,8
+11,11,11,11,1
+22,22,22,22,5
+33,33,33,33123,213,123,123,9
+6,6,6,6,8
+234,234,234,234,1
+456,456,456,456,2
+555,555,5555,555,7
+654,Curupira,1850,desconhecido,2
+789,789,789,0,9
+753,753,753,1,8
+rett,ertt,ert,6,3
+fv,fv,fv,fv,5
+fg,fg,fg,fg,20
+hn,hn,hn,hn,15
+fgb,fgb,fgb,hn,7
+56115841,ToyStory,1996,hn,8
+dfg,dfg,dfg,hn,6
+vfd,vfd,vfd,hn,3
+a,a,a,a,5
+951,Nove cinco um,1951,NoveCinco,2
+sdf,sdf,sdf,sdf,2
+zxc,zxc,zxc,zxc,3
+ghj,ghj,ghj,ghj,6
+vbn,vbn,vbn,vbn,7
+asdfddf,bvgg,dsf,vbn,8
+dfgdsasdfg,dsfgfgd,dfggdfcvb,cvvc,15
+cb,vcbvcb,vcbbcv,cvbbcv,13
+sad,sad,sad,desconhecido,8
+xcv,xcv,xcv,desconhecido,1
+bnm,bnm,bnm,desconhecido,3
+ert,ert,ert,desconhecido,8
+tyu,tyu,tyu,desconhecido,3
+798654987,moral,1880,desconhecido,4
+gay,paulo,1997,gostosa,5
+156984,a odisseia,1560,desconhecido,2
+fr,fr,fr,a,6
+1213,1213,1213,1213,1
+567,567,567,5,567
+12,12,12,12,12
