@@ -47,9 +47,9 @@ label_cliente = Label(janela_principal,text="Adicionar Cliente",bg="#3c6474",fg=
 label_cliente.place(x=333, y=216)
 
 
-button_venda = Button(janela_principal,image=imagem_venda)
+button_venda = Button(janela_principal,image=imagem_venda, command=criar_tela_venda)
 button_venda.place(x=470, y=130)
-label_venda = Label(janela_principal,text="Vender",bg="#3c6474",fg='white', font= "Times 8 bold")
+label_venda = Label(janela_principal,text="Locações",bg="#3c6474",fg='white', font= "Times 8 bold")
 label_venda.place(x=472, y=216)
 
 

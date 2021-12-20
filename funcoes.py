@@ -3,7 +3,9 @@ from tkinter import*
 from tkinter import ttk
 from tkinter import font
 from types import BuiltinFunctionType
+from typing import ValuesView
 from PIL import ImageTk, Image
+from datetime import date
 from tkinter import messagebox
 
 
@@ -18,11 +20,14 @@ lista_livros = []
 lista_numeros = []
 lista_email = []
 dic_endereco = {}
+dic_locacao = {}
+lista_locados = []
 
 
 #adicionando as informações do arquivo no dicionario
 arquivo_livro = open("livros.txt","r")
 arquivo_cliente = open("cliente.txt","r")
+arquivo_locado = open("locados.txt","r")
 for linha in arquivo_livro:
     linha = linha.strip()
     lista_livros.append(linha)
@@ -32,6 +37,11 @@ for linha in arquivo_cliente:
     linha = linha.strip()
     lista_cliente.append(linha)
 arquivo_cliente.close()
+
+for linha in arquivo_locado:
+    linha = linha.strip()
+    lista_locados.append(linha)
+arquivo_locado.close()
 
 auxiliar = 0
 for livro in lista_livros:
@@ -56,7 +66,15 @@ for cliente in lista_cliente:
     lista_numeros.append(lista_sep_cliente[3])
     lista_email.append(lista_sep_cliente[2])
     auxiliar_cliente += 1
-print(dic_cliente)
+
+
+auxiliar_locado = 0
+for locado in lista_locados:
+    lista_sep_loc = lista_locados[auxiliar_locado].split(",")
+    info_locado = [lista_sep_loc[0], lista_sep_loc[1], lista_sep_loc[2]] #Nome do cliente, Livro, e Data de devolução
+    dic_locacao[lista_sep_loc[0]] = info_locado
+    auxiliar_locado += 1
+
 #botão para fechar a tela
 def sair(tela):
     tela.destroy()
@@ -75,14 +93,6 @@ def mostrar_tudo():
         dic_livros[item][1],
         dic_livros[item][2],
         dic_livros[item][3]))
-    sep = 100*("-")
-    print(dic_livros)
-    print(sep)
-    print(dic_titulo)
-    print(sep)
-    print(dic_autor)
-    print(sep)
-    print(lista_autor)
 
 #Compara a entrada do Entry com o item no dicionário, se True, retorna as informações dos livros
 def pesquisar():
@@ -227,28 +237,35 @@ def criar_tela_pesquisa():
 
 def selecionar():
     global selecionados
-    selected = tv.focus()
-    selecionados = tv.item(selected, 'values')
+
+    selected = tv.focus() # Pegar as informações do livro selecionado na TreeView
+    selecionados = tv.item(selected, 'values') # Tupla com as informações dos livros
+    print(selecionados)
     if selected:
         ask = messagebox.askquestion("Continuar?","Livro selecionado, deseja abrir tela de cadastro de cliente?")
         if ask == "yes":
-            print("Livro Selecionado: "+ selecionados[1])
             sair(tela_pesquisa)
             criar_tela_cliente()
 
 def avancar():
-    selected_venda = tv_cliente.focus()
-    cliente_selecionado = tv_cliente.item(selected_venda, 'values')
+    global cliente_selecionado
+
+    selected_venda = tv_cliente.focus() #Pegar as informações dos clientes selecionados na TreeView
+    cliente_selecionado = tv_cliente.item(selected_venda, 'values') #Tupla com as informações dos clientes
+    print(cliente_selecionado)
+    print(dic_locacao)
     if selected_venda:       
         ask2 = messagebox.askquestion("Continuar?", "Deseja prosseguir para locação?")
         if ask2 == "yes":
             criar_tela_venda()
-            print("Livro Selecionado: "+ selecionados[1])
+            sair(tela_cliente)
+            botao_selecionado['state'] = NORMAL
+            tv_locar_info.insert("","end", values=(cliente_selecionado[0],selecionados[1]))
+
 
 def cadastrar_cliente():
     
     arquivo_cliente = open("cliente.txt","a")
-    print(dic_cliente)
 
     if entry_cpf.get() in dic_cliente:
         continuar = messagebox.askquestion("Continuar?", "Cliente já possui cadastro, deseja prosseguir?")
@@ -256,7 +273,6 @@ def cadastrar_cliente():
             tela_cliente.destroy()
             criar_tela_venda()
             
-    
     elif entry_email.get() in lista_email:
         messagebox.showerror("Ops!", "E-mail já cadastrado")
         #Implementar usuário associado e este e-mail
@@ -313,6 +329,7 @@ def cadastrar_cliente():
 
 
 def pesquisar_cliente():
+    limpar(tv_cliente)
     if entry_pesquisa.get() in dic_cliente:
         tv_cliente.insert("","end", values=(dic_cliente[entry_pesquisa.get()][1], dic_cliente[entry_pesquisa.get()][2], dic_cliente[entry_pesquisa.get()][3]))
         botao_avancar['state'] = NORMAL
@@ -583,12 +600,124 @@ def criar_tela_cadastro():
     botao_fechar.place(x=15, y=420)
     
 
+def mostrar_locados():
+    limpar(tv_locar)
+    for locado in dic_locacao:
+        tv_locar.insert("","end", values=(dic_locacao[locado][0], dic_locacao[locado][1], dic_locacao[locado][2]))
+    
+        
+
+def select_locacao():
+    combo_periodo['state'] = NORMAL
+    botao_locar['state'] = NORMAL
+    
+
+def finalizar():
+
+    arquivo_locado = open("locados.txt", "a")
+    cliente_livro = tv_locar_info.focus()
+    cliente_livro_select = tv_locar_info.item(cliente_livro, 'values')
+    nome = cliente_livro_select[0]
+    titulo = cliente_livro_select[1]
+    
+    #Implementar função que debita saldo de livros e escreve essa infirmação no arquivo
+
+    dic_locacao[nome] = [nome, titulo, combo_periodo.get()]
+    arquivo_locado.write(nome + ",")
+    arquivo_locado.write(titulo + ",")
+    arquivo_locado.write(combo_periodo.get() + "\n")
+    arquivo_locado.close()
+
+    combo_periodo['state'] = DISABLED
+    botao_locar['state'] = DISABLED
+    botao_selecionado['state'] = DISABLED
+    
+
+
 def criar_tela_venda():
+    global tv_locar_info
+    global tv_locar
+    global combo_periodo
+    global botao_selecionado
+    global botao_locar
+    global data
 
     janela_venda = Toplevel()
     janela_venda.geometry("480x480+641+0")
     janela_venda.resizable(0, 0)  
     
+    titulo_tela_venda = Label(janela_venda, text= 'LOCAR LIVRO')
+    titulo_tela_venda.config(font='Arial 18 bold',fg='black', width=37, height=2, bg="white", relief='groove')
+    titulo_tela_venda.place(x=-30, y=0)
+
+    main_label_venda = Label(janela_venda, width=65, height=25, relief="groove")
+    main_label_venda.place(x=10, y=65)
+
+    label_tv = Label(main_label_venda, text="Consultar locações feitas", font="Arial 8 bold")
+    label_tv.place(x=5, y=5)
+
+    tv_locar = ttk.Treeview(main_label_venda)
+    tv_locar.config(columns=('Cliente','Livro','Devolução'),show='headings', selectmode=BROWSE, height=1)
+    tv_locar.column('Cliente',minwidth=0, width=145)
+    tv_locar.column('Livro',minwidth=0, width=191) 
+    tv_locar.column('Devolução',minwidth=0, width=100) 
+
+    tv_locar.heading('Cliente', text='Cliente')
+    tv_locar.heading('Livro', text='Livro')
+    tv_locar.heading('Devolução', text='Devolução')
+    tv_locar.place(x=5, y=30, height=160)
+
+    style_tvv = ttk.Style()
+    style_tvv.theme_use("clam")
+    style_tvv.configure("TreeView")
+
+    botao_mostrar_loc = Button(main_label_venda, text="Vizualizar Locações", font="Arial 8", width=16, command=mostrar_locados)
+    botao_mostrar_loc.place(x=339, y=2)
+
+    label_info = Label(main_label_venda, text="Dados do Cliente/Livro", font="Arial 8 bold")
+    label_info.place(x=5, y=195)
+
+    tv_locar_info = ttk.Treeview(main_label_venda)
+    tv_locar_info.config(columns=("Cliente", "Livro"), show="headings")
+    tv_locar_info.column("Cliente", minwidth=0, width=120)
+    tv_locar_info.column("Livro", minwidth=0, width=120)
+
+    tv_locar_info.heading("Cliente", text="Cliente")
+    tv_locar_info.heading("Livro", text="Livro")
+    tv_locar_info.place(x=5, y=220, height=100)
+
+    botao_selecionado = Button(main_label_venda, text="Selecionar", font="Arial 9", width=16, command=select_locacao)
+    botao_selecionado['state'] = DISABLED
+    botao_selecionado.place(x=127, y=320)
+
+    botao_locar = Button(main_label_venda, text="Finalizar", font="Arial 9", width=16, height=2, command=finalizar)
+    botao_locar['state'] = DISABLED
+    botao_locar.place(x=321 , y=320)
+
+    label_info_data = Label(main_label_venda, text="Selecione o Período da locação)", font="Arial 8 bold")
+    label_info_data.place(x=265,  y=195) 
+
+    label_select = Label(main_label_venda, width=25, height=6, relief="groove", borderwidth=3)
+    label_select.place(x=262, y=220) 
+
+    data = date.today()
+    label_info_atual = Label(label_select, text="Data Atual", font="Arial 8")
+    label_info_atual.place(x=0,  y=0)
+
+    label_data_atual = Label(label_select, text=data, width=8, fg="black")
+    label_data_atual.place(x=0, y=30)
+
+    label_info_dev = Label(label_select, text="Período de locação\n (semanas)", font="Arial 8")
+    label_info_dev.place(x=77,  y=0)
+
+    lista_periodo = ["1","2","3"]
+    combo_periodo = ttk.Combobox(label_select , width=13, values=lista_periodo)
+    combo_periodo['state'] = DISABLED
+    combo_periodo.place(x=77, y=33)
+
+    botao_voltar_loc = Button(janela_venda, text="VOLTAR", width=22, command=lambda:sair(janela_venda))
+    botao_voltar_loc.place(x=10, y=450)
+
 
 
 
