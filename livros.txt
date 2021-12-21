@@ -1,43 +1,7 @@
-17,Gabriela,1997,Cinho Paulista,2
-1,1,1,1,6
-2,2,2,2,5
-3,3,3,3,8
-11,11,11,11,1
-22,22,22,22,5
-33,33,33,33123,2
-6,6,6,6,8
-234,234,234,234,1
-456,456,456,456,2
-555,555,5555,555,7
-654,Curupira,1850,desconhecido,2
-789,789,789,0,9
-753,753,753,1,8
-rett,ertt,ert,6,3
-fv,fv,fv,fv,5
-fg,fg,fg,fg,20
-hn,hn,hn,hn,15
-fgb,fgb,fgb,hn,7
-56115841,ToyStory,1996,hn,8
-dfg,dfg,dfg,hn,6
-vfd,vfd,vfd,hn,3
-a,a,a,a,5
-951,Nove cinco um,1951,NoveCinco,2
-sdf,sdf,sdf,sdf,2
-zxc,zxc,zxc,zxc,3
-ghj,ghj,ghj,ghj,6
-vbn,vbn,vbn,vbn,7
-asdfddf,bvgg,dsf,vbn,8
-dfgdsasdfg,dsfgfgd,dfggdfcvb,cvvc,15
-cb,vcbvcb,vcbbcv,cvbbcv,13
-sad,sad,sad,desconhecido,8
-xcv,xcv,xcv,desconhecido,1
-bnm,bnm,bnm,desconhecido,3
-ert,ert,ert,desconhecido,8
-tyu,tyu,tyu,desconhecido,3
-798654987,moral,1880,desconhecido,4
-gay,paulo,1997,gostosa,5
-156984,a odisseia,1560,desconhecido,2
-fr,fr,fr,a,6
-1213,1213,1213,1213,1
-567,567,567,5,567
-12,12,12,12,12
+1,orgulho e preconceito,1950,jane austen,3
+2,1984,1900,George Orwell,5
+3,Dom Quixote de la Mancha,1940,Miguel de Cervantes,12
+4,O Pequeno Principe,1890,Antoine de Saint-Exupery,4
+5,Dom Casmurro,1910,Machado de Assis,7
+6,O Conde de Monte Cristo,1860,Alexandre Dumas,8
+7,O Processo,1898,Franz Kafka,3

@@ -1,7 +1,1 @@
-ronaldo daniel da silva,gabriela,3 semanas
-gabriela nascimento,gabriela,3 semanas
-234,curupira,1 semana
-456,toystory,1
-567,toystory,1
-gabriela nascimento,6,2
-asd,22,2
+ronaldo daniel da silva,orgulho e preconceito,1

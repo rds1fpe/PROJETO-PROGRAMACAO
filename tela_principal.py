@@ -5,7 +5,7 @@ from tkinter import messagebox
 from funcoes import*
 
 
-caminho = ("/Users/Ronaldo/Desktop/PROJETO/PROJETO-PROGRAMACAO/app1/images/")
+caminho = ("/Users/RONALDO/Desktop/PROJETO-PROGRAMACAO/images/")
 
 
 janela_principal =Tk()
