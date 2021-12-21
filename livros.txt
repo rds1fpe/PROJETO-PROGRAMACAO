@@ -5,3 +5,4 @@
 5,Dom Casmurro,1910,Machado de Assis,7
 6,O Conde de Monte Cristo,1860,Alexandre Dumas,8
 7,O Processo,1898,Franz Kafka,3
+8,chapeuzinho vermelho,1760,desconhecido,5

@@ -4,7 +4,7 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 from funcoes import*
 
-
+#Ajustar o caminho em caso de Erro
 caminho = ("/Users/RONALDO/Desktop/PROJETO-PROGRAMACAO/images/")
 
 

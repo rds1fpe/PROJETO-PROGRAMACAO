@@ -9,22 +9,23 @@ from datetime import date
 from tkinter import messagebox
 
 
-#dicionários que serão manipulados durante a execução do programa
+#dicionários e listas que serão manipulados durante a execução do programa
 dic_livros = {}
 dic_titulo = {}
 dic_autor = {}
-lista_autor = [] # Lista para a busca de autores 
 dic_cliente = {}
+dic_endereco = {}
+dic_locacao = {}
+lista_autor = []
 lista_cliente = []
 lista_livros = []
 lista_numeros = []
 lista_email = []
-dic_endereco = {}
-dic_locacao = {}
 lista_locados = []
 
 
 #adicionando as informações do arquivo no dicionario
+#arquivo de Livro, Cliente e Livro locados precisa iniciar com pelo menos 1 linha em cada arquivo(será corrigido até entrega final)
 arquivo_livro = open("livros.txt","r")
 arquivo_cliente = open("cliente.txt","r")
 arquivo_locado = open("locados.txt","r")
@@ -33,16 +34,19 @@ for linha in arquivo_livro:
     lista_livros.append(linha)
 arquivo_livro.close()
 
+#Transformando Arquivo de clientes em Lista para ser inserido no Dicionário
 for linha in arquivo_cliente:
     linha = linha.strip()
     lista_cliente.append(linha)
 arquivo_cliente.close()
 
+#Transformando Arquivo de livros locados em Lista para ser inserido no Dicionário de Livros Locados
 for linha in arquivo_locado:
     linha = linha.strip()
     lista_locados.append(linha)
 arquivo_locado.close()
 
+#CRIANDO OS 3 DICIONÁRIOS COM OS DADOS DO ARQUIVO
 auxiliar = 0
 for livro in lista_livros:
     #criando uma lista separando cada item por virgula(arquivo separado por virgula no arquivo)
@@ -75,6 +79,8 @@ for locado in lista_locados:
     dic_locacao[lista_sep_loc[0]] = info_locado
     auxiliar_locado += 1
 
+######################################################################################################################
+#FUNÇÕES QUE SÃO USADAS EM MAIS DE UMA TELA
 #botão para fechar a tela
 def sair(tela):
     tela.destroy()
@@ -83,6 +89,8 @@ def sair(tela):
 def limpar(tv):
     for item in tv.get_children():
         tv.delete(item)
+
+################################################################################################################
 
 #mostra todos os livros cadastrados na tela de pesquisa
 def mostrar_tudo():
@@ -94,6 +102,7 @@ def mostrar_tudo():
         dic_livros[item][2],
         dic_livros[item][3]))
 
+#FUNÇÃO DE PESQUISA DE LIVROS
 #Compara a entrada do Entry com o item no dicionário, se True, retorna as informações dos livros
 def pesquisar():
     #Limpa a pesquisa antes de mostrar um novo resultado
@@ -235,6 +244,8 @@ def criar_tela_pesquisa():
     botao_fechar = Button(tela_pesquisa, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(tela_pesquisa))
     botao_fechar.place(x=15, y=450)
 
+########################################################################################################################################
+#FUNÇÃO QUE PEGA OS ITENS SELECIONADOS NA PESQUISA DE LIVROS E ABRE A TELA DE CADASTRO DE CLIENTE PARA PROSSEGUIR COM A LOCAÇÃO DO MESMO
 def selecionar():
     global selecionados
 
@@ -247,6 +258,7 @@ def selecionar():
             sair(tela_pesquisa)
             criar_tela_cliente()
 
+#FUNÇÃO QUE PEGA O ÚSUARIO CADASTRADO OU SELECIONADO E ABRE A TELA DE LOCAÇÃO
 def avancar():
     global cliente_selecionado
 
@@ -262,7 +274,8 @@ def avancar():
             botao_selecionado['state'] = NORMAL
             tv_locar_info.insert("","end", values=(cliente_selecionado[0],selecionados[1]))
 
-
+##########################################################################################################
+#FUNÇÃO RESPONSÁVEL POR CADASTRAR OS CLIENTES E ESCREVER AS INFORMAÇÕES NO ARQUIVO
 def cadastrar_cliente():
     
     arquivo_cliente = open("cliente.txt","a")
@@ -327,7 +340,8 @@ def cadastrar_cliente():
         botao_salvar['state'] = DISABLED
     arquivo_cliente.close()
 
-
+################################################################################################################################################################
+#FUNÇÃO PARA PESQUISAR CLIENTES
 def pesquisar_cliente():
     limpar(tv_cliente)
     if entry_pesquisa.get() in dic_cliente:
@@ -353,7 +367,7 @@ def pesquisar_cliente():
             botao_salvar['state'] = NORMAL
 
 
-
+#CRIAÇÃO DA TELA DE CADASTRO E BUSCA DE CLIENTES
 def criar_tela_cliente():
 
     global entry_cpf
@@ -499,7 +513,7 @@ def criar_tela_cliente():
     botao_voltar.place(x=10, y=450)
 
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+####################################################################################################################                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 #Função responsável por cadastrar o livro num dicionario e escrever as informações do mesmo no arquivo
 def cadastrar():
     arquivo_livro = open('livros.txt','a')
@@ -521,8 +535,9 @@ def cadastrar():
         arquivo_livro.write(id_livro.get().lower()+",")
         arquivo_livro.write(nome_livro.get().lower()+",")
         arquivo_livro.write(ano_livro.get().lower()+",")
-        arquivo_livro.wirte(qntd_livro.get()+",")
-        arquivo_livro.write("desconhecido"+"\n")
+        arquivo_livro.write("desconhecido" +",")
+        arquivo_livro.write(qntd_livro.get()+"\n")
+        
         messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
         sair(janela_cadastro)
         arquivo_livro.close()
@@ -598,20 +613,21 @@ def criar_tela_cadastro():
 
     botao_fechar = Button(janela_cadastro, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(janela_cadastro))
     botao_fechar.place(x=15, y=420)
-    
 
+#########################################################################################################################    
+#MOSTRAR NA TREE VIEW OS LIVROS QUE FORAM LOCADOS
 def mostrar_locados():
     limpar(tv_locar)
     for locado in dic_locacao:
         tv_locar.insert("","end", values=(dic_locacao[locado][0], dic_locacao[locado][1], dic_locacao[locado][2]))
     
         
-
+#FUNÇÃO PARA DESBLOQUEAR A ESCOLHA DA QUANTIDADE DE TEMPO DA LOCAÇÃO
 def select_locacao():
     combo_periodo['state'] = NORMAL
     botao_locar['state'] = NORMAL
     
-
+#ABRE O ARQUIVO DE LOCADOS E ESCREVE AS INFORMAÇÕES DO CLIENTE E DO LIVRO LOCADO
 def finalizar():
 
     arquivo_locado = open("locados.txt", "a")
@@ -620,7 +636,7 @@ def finalizar():
     nome = cliente_livro_select[0]
     titulo = cliente_livro_select[1]
     
-    #Implementar função que debita saldo de livros e escreve essa infirmação no arquivo
+    #Implementar função que debita saldo de livros e escreve essa informação no arquivo
 
     dic_locacao[nome] = [nome, titulo, combo_periodo.get()]
     arquivo_locado.write(nome + ",")
@@ -633,7 +649,7 @@ def finalizar():
     botao_selecionado['state'] = DISABLED
     
 
-
+#CRIÇÃO DA TELA DE VENDA/LOCAÇÃO
 def criar_tela_venda():
     global tv_locar_info
     global tv_locar
