@@ -5,13 +5,13 @@ from tkinter import messagebox
 from funcoes import*
 
 #Ajustar o caminho em caso de Erro
-caminho = ("/Users/RONALDO/Desktop/PROJETO-PROGRAMACAO/images/")
+caminho = ("/Users/RONALDO/Desktop/Python/images/")
 
 
 janela_principal =Tk()
 janela_principal.geometry ("640x480+0+0")
 janela_principal.title("Library Sis")
-janela_principal.iconbitmap(True,caminho+"icon.ico")
+janela_principal.iconbitmap(True,caminho+"icon.ico") # True para o ícone aparecer nas outra janelas
 janela_principal.resizable(0,0)
 
 #imagem de fundo
