@@ -1,10 +1,11 @@
-1,orgulho e preconceito,1950,jane austen,D
-2,1984,1900,George Orwell,D
-3,Dom Quixote de la Mancha,1940,Miguel de Cervantes,D
-4,O Pequeno Principe,1890,Antoine de Saint-Exupery,D
-5,Dom Casmurro,1910,Machado de Assis,D
-6,O Conde de Monte Cristo,1860,Alexandre Dumas,D
-7,O Processo,1898,Franz Kafka,D
-8,chapeuzinho vermelho,1760,desconhecido,D
-123,123,123,123,D
-12,12,12,desconhecido,D
+8,chapeuzinho vermelho,1760,desconhecido,5
+123,123,123,123,45
+12,12,12,desconhecido,5
+3,dom quixote de la mancha,1940,miguel de cervantes,7
+1,orgulho e preconceito,1950,jane austen,8
+321,321,321,desconhecido,9
+4,o pequeno principe,1890,antoine de saint-exupery,7
+7,o processo,1898,franz kafka,N/D
+6,o conde de monte cristo,1860,alexandre dumas,N/D
+5,dom casmurro,1910,machado de assis,N/D
+2,1984,1900,george grwell,63

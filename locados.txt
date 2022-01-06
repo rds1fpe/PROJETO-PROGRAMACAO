@@ -1,0 +1,7 @@
+cliente1,o processo,5
+cliente4,o processo,3
+paulo lucas,o conde de monte cristo,3
+thays ramos,dom casmurro,4
+ronaldo daniel da silva,dom casmurro,6
+joao victor rodrigues,1984,3
+juliana souza lima,1984,5

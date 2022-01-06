@@ -51,7 +51,7 @@ auxiliar = 0
 for livro in lista_livros:
     #criando uma lista separando cada item por virgula(Linha separada por virgula no arquivo)
     lista_separada = (lista_livros[auxiliar].split(","))
-    print(lista_separada)
+    #print(lista_separada)
     #lista onde cada item é uma informação do livro
     info_id = [lista_separada[1].lower(), lista_separada[2].lower(), lista_separada[3].lower(), lista_separada[4]]
     info_titulo_autor = [lista_separada[0].lower(),lista_separada[1].lower(), lista_separada[2], lista_separada[3].lower(), lista_separada[4]] 
@@ -62,7 +62,7 @@ for livro in lista_livros:
     auxiliar += 1
 #print(dic_livros)
 #print(dic_autor)
-#print(dic_titulo)
+print(dic_titulo)
 #print(lista_autor)
 
 auxiliar_cliente = 0
@@ -258,10 +258,13 @@ def selecionar():
     selecionados = tv.item(selected, 'values') # Tupla com as informações dos livros
     print(selecionados)
     if selected:
-        ask = messagebox.askquestion("Continuar?","Livro selecionado, deseja abrir tela de cadastro de cliente?")
-        if ask == "yes":
-            sair(tela_pesquisa)
-            criar_tela_cliente()
+        if selecionados[4] == "N/D":
+                messagebox.showerror("Ops!","Este Livro não está disponível")
+        else:
+            ask = messagebox.askquestion("Continuar?","Livro selecionado, deseja abrir tela de cadastro de cliente?")
+            if ask == "yes":
+                sair(tela_pesquisa)
+                criar_tela_cliente()
 
 #FUNÇÃO QUE PEGA O ÚSUARIO CADASTRADO OU SELECIONADO E ABRE A TELA DE LOCAÇÃO
 def avancar():
@@ -654,12 +657,10 @@ def finalizar():
     cliente_livro_select = tv_locar_info.item(cliente_livro, 'values')
     nome = cliente_livro_select[0]
     titulo = cliente_livro_select[1]
-    
-    #Implementar função que debita saldo de livros e escreve essa informação no arquivo
-
+  
     ask_finalizar = messagebox.askquestion("Finalizar?","Deseja finalizar a locação?")
     if ask_finalizar == "yes":
-
+        
         dic_locacao[nome] = [nome, titulo, combo_periodo.get()]
         arquivo_locado.write(nome + ",")
         arquivo_locado.write(titulo + ",")
@@ -669,6 +670,39 @@ def finalizar():
         combo_periodo['state'] = DISABLED
         botao_locar['state'] = DISABLED
         botao_selecionado['state'] = DISABLED
+        
+        # Muda a informação (disponível) no arquivo de livros
+        
+        isbn = dic_titulo[titulo][0]
+        titulo_l = dic_titulo[titulo][1]
+        ano = dic_titulo[titulo][2]
+        autor = dic_titulo[titulo][3]
+        qntd = int(dic_livros[isbn][3])
+        new_qntd = qntd - 1
+
+        string_del = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(qntd) #Linha que será deletada do arquivo de livros
+        
+        if new_qntd == 0:
+            new_string = isbn + "," + titulo_l + "," + ano + "," + autor + "," + "N/D"
+            dic_livros[isbn][3] = "N/D"
+            with open("livros.txt", "r") as editar_arquivo: # abrindo o arquivo no modo de leitura
+                lista_linhas = editar_arquivo.readlines() # criando uma lista de linhas
+            with open("livros.txt", "w") as editar_arquivo:
+                for linha in lista_linhas:
+                    if linha.strip("\n") != string_del:
+                        editar_arquivo.write(linha)
+                editar_arquivo.write(new_string+"\n")
+        elif new_qntd > 0:
+            new_string = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(new_qntd) # nova linha que será colocada no arquivo de livros
+            dic_livros[isbn][3] = new_qntd #Muda a informação no dicionário para n ser necessário reabrir o programa e ler o arquivo novamente
+            with open("livros.txt", "r") as editar_arquivo: # abrindo o arquivo no modo de leitura
+                lista_linhas = editar_arquivo.readlines() # criando uma lista de linhas
+            with open("livros.txt", "w") as editar_arquivo:
+                for linha in lista_linhas:
+                    if linha.strip("\n") != string_del:
+                        editar_arquivo.write(linha)
+                editar_arquivo.write(new_string+"\n")
+        
     
 
 #CRIÇÃO DA TELA DE VENDA/LOCAÇÃO
