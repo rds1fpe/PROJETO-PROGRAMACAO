@@ -152,7 +152,7 @@ def pesquisar():
         elif entrada_pesquisa.get().lower() not in dic_autor:
             messagebox.showerror("Ops!","Livro não encontrado!")
         else:
-            for autor in lista_autor:
+            for autor in lista_autor: #Retorna todos os livros que possuem os mesmos autores
                 if lista_autor[aux_autor][3] == entrada_pesquisa.get().lower():
                     tv.insert("","end", values=(lista_autor[aux_autor][0].lower(), # inserindo ID na grade
                     lista_autor[aux_autor][1], #inserindo Título na grade
@@ -192,7 +192,7 @@ def criar_tela_pesquisa():
     entrada_pesquisa.place(x=5, y=20, height= 25)
 
     #Criando janela para visualização do conteudo em grade(TREEVIEW)
-    tv=ttk.Treeview(main_label_livro,columns=('ISBN','Título','Ano','Autor','Status'),show='headings', selectmode=BROWSE)
+    tv=ttk.Treeview(main_label_livro,columns=('ISBN','Título','Ano','Autor','Qntd'),show='headings', selectmode=BROWSE)
     #Scrollbar para facilitar a visualização do conteudo dentro do TreeView
     scroll_tv = Scrollbar(main_label_livro, orient='vertical', command=tv.yview)
     scroll_tv.place(x=432, y=125 ,height=200)
@@ -203,13 +203,13 @@ def criar_tela_pesquisa():
     tv.column('Título',minwidth=0, width=130) 
     tv.column('Ano',minwidth=0, width=55) 
     tv.column('Autor',minwidth=0, width=156)
-    tv.column('Status', minwidth=0, width=45) 
+    tv.column('Qntd', minwidth=0, width=45) 
 
     tv.heading('ISBN', text='ISBN')
     tv.heading('Título', text='Título')
     tv.heading('Ano', text='Ano')
     tv.heading('Autor', text='Autor')
-    tv.heading('Status', text='Status')
+    tv.heading('Qntd', text='Qntd')
     tv.place(x=2, y=100)
 
     #Estilo da TreeView
@@ -338,6 +338,7 @@ def cadastrar_cliente():
         arquivo_cliente.write(combo_ano.get().lower()+",")
         arquivo_cliente.write(entry_estado.get().lower()+"\n")
         messagebox.showinfo("Sucesso", "Cliente registrado com sucesso")
+        #Limpando todos os entrys
         entry_cpf.delete(0, "end")
         entry_nome.delete(0, "end")
         entry_email.delete(0, "end")
@@ -349,7 +350,8 @@ def cadastrar_cliente():
         entry_endereco.delete(0, "end")
         entry_num.delete(0, "end")
         entry_estado.delete(0, "end")
-
+        
+        #Desabilitando os Entrys
         entry_cpf['state'] = DISABLED
         entry_nome['state'] = DISABLED
         entry_email['state'] = DISABLED
@@ -653,14 +655,14 @@ def select_locacao():
 def finalizar():
 
     arquivo_locado = open("locados.txt", "a")
-    cliente_livro = tv_locar_info.focus()
-    cliente_livro_select = tv_locar_info.item(cliente_livro, 'values')
+    cliente_livro = tv_locar_info.focus() 
+    cliente_livro_select = tv_locar_info.item(cliente_livro, 'values') #Lista dos valores selecionados da TreeView
     nome = cliente_livro_select[0]
     titulo = cliente_livro_select[1]
   
     ask_finalizar = messagebox.askquestion("Finalizar?","Deseja finalizar a locação?")
     if ask_finalizar == "yes":
-        
+        #Escreve no arquivo as informações da locação(Cliente, livro e data de devolução)
         dic_locacao[nome] = [nome, titulo, combo_periodo.get()]
         arquivo_locado.write(nome + ",")
         arquivo_locado.write(titulo + ",")
@@ -672,7 +674,9 @@ def finalizar():
         botao_selecionado['state'] = DISABLED
         
         # Muda a informação (disponível) no arquivo de livros
-        
+        #Foi necessário pegar essas informações do dicionário de Titulos porque...
+        #A úinica chave disponível para pesquisa era "titulo"
+        #Obtendo as Strings para concatenar e remover a linha do arquivo
         isbn = dic_titulo[titulo][0]
         titulo_l = dic_titulo[titulo][1]
         ano = dic_titulo[titulo][2]
@@ -680,18 +684,22 @@ def finalizar():
         qntd = int(dic_livros[isbn][3])
         new_qntd = qntd - 1
 
-        string_del = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(qntd) #Linha que será deletada do arquivo de livros
+        #Linha que será deletada do arquivo de livros
+        string_del = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(qntd)
         
+        #Se a quantidade for igual a 0, o valor (N/D) é inserido no arquivo
         if new_qntd == 0:
             new_string = isbn + "," + titulo_l + "," + ano + "," + autor + "," + "N/D"
-            dic_livros[isbn][3] = "N/D"
+            dic_livros[isbn][3] = "N/D" # muda a quantidade no dicionário para n/d para não ser necessário reabrir o arquivo
             with open("livros.txt", "r") as editar_arquivo: # abrindo o arquivo no modo de leitura
                 lista_linhas = editar_arquivo.readlines() # criando uma lista de linhas
             with open("livros.txt", "w") as editar_arquivo:
                 for linha in lista_linhas:
-                    if linha.strip("\n") != string_del:
+                    if linha.strip("\n") != string_del: # se a linha for diferente da string que vai ser removida, ele escreve essa linha no arquivo
                         editar_arquivo.write(linha)
                 editar_arquivo.write(new_string+"\n")
+
+        #Se a quantidade for maio que 0, apenas subtrai 1 da quantidade e escreve essa informação no arquivo
         elif new_qntd > 0:
             new_string = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(new_qntd) # nova linha que será colocada no arquivo de livros
             dic_livros[isbn][3] = new_qntd #Muda a informação no dicionário para n ser necessário reabrir o programa e ler o arquivo novamente
