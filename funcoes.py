@@ -1,9 +1,9 @@
-from io import TextIOWrapper
+#from io import TextIOWrapper
 from tkinter import*
 from tkinter import ttk
-from tkinter import font
-from types import BuiltinFunctionType
-from typing import ValuesView
+#from tkinter import font
+#from types import BuiltinFunctionType
+#from typing import ValuesView
 from PIL import ImageTk, Image
 from datetime import date, timedelta
 from tkinter import messagebox
@@ -234,20 +234,20 @@ def criar_tela_pesquisa():
     radio_pesquisa3.config(text='Autor',font='Arial 10 bold',fg="black", variable=radioValue,value= 3)
     radio_pesquisa3.place(x=128, y=50) 
 
-    botao_pesquisa = Button(main_label_livro, text='Pesquisar', font='Times 10 bold', command=pesquisar)
+    botao_pesquisa = Button(main_label_livro, text='PESQUISAR', font='Arial 8', width=16, command=pesquisar)
     botao_pesquisa.place(x=200,y=20)
 
-    botao_limpar = Button(main_label_livro, text='Limpar',font='Time 10 bold', command=lambda:limpar(tv))
-    botao_limpar.place(x=374,y=20)
+    botao_limpar = Button(main_label_livro, text='LIMPAR',font='Arial 8', width=16, command=lambda:limpar(tv))
+    botao_limpar.place(x=325,y=20)
 
-    botao_mostrar_tudo = Button(main_label_livro, text="MOSTRAR TUDO", font='Arial 10 bold', width=22, fg="black", command=mostrar_tudo)
+    botao_mostrar_tudo = Button(main_label_livro, text="MOSTRAR TUDO", font='Arial 8', width=16, fg="black", command=mostrar_tudo)
     botao_mostrar_tudo.place(x=2, y=340)
 
-    botao_selecionar = Button(main_label_livro, text= 'SELECIONAR', font="Arial 10 bold", width=20, command=selecionar)
-    botao_selecionar.place(x=262, y=340)
+    botao_selecionar = Button(main_label_livro, text= 'SELECIONAR', font="Arial 8", width=16, command=selecionar)
+    botao_selecionar.place(x=327, y=340)
 
-    botao_fechar = Button(tela_pesquisa, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(tela_pesquisa))
-    botao_fechar.place(x=15, y=450)
+    botao_fechar = Button(tela_pesquisa, text="VOLTAR", font="Arial 8", width=16, command=lambda:sair(tela_pesquisa))
+    botao_fechar.place(x=12, y=450)
 
 ########################################################################################################################################
 #FUNÇÃO QUE PEGA OS ITENS SELECIONADOS NA PESQUISA DE LIVROS E ABRE A TELA DE CADASTRO DE CLIENTE PARA PROSSEGUIR COM A LOCAÇÃO DO MESMO
@@ -421,7 +421,7 @@ def criar_tela_cliente():
     titulo_tela_cli.place(x=-35, y=0)
 
     label_texto_cli = Label(tela_cliente)
-    label_texto_cli.config(bg="#D3D3D3", fg="black", font='Arial 8', text='Todo os itens que possuem ( * ) são obrigatórios', width=50, height=1)
+    label_texto_cli.config(bg="#D3D3D3", fg="black", font='Arial 8', text='Todos os itens que possuem ( * ) são obrigatórios', width=50, height=1)
     label_texto_cli.place(x=170,y=440)
 
     main_label_cli = Label(tela_cliente, width=65, height=23, relief="groove")
@@ -519,10 +519,10 @@ def criar_tela_cliente():
     label_n = Label(main_label_cli, text="N°").place(x=328, y=293)
     label_uf = Label(main_label_cli, text="* UF").place(x=390, y=293)
 
-    botao_pesquisar = Button(main_label_cli, text="BUSCAR",font="Arial 9 bold", command=pesquisar_cliente)
+    botao_pesquisar = Button(main_label_cli, text="BUSCAR",font="Arial 9", command=pesquisar_cliente)
     botao_pesquisar.place(x=200, y=20)
 
-    botao_avancar = Button(main_label_cli, text = "AVANÇAR", font="Arial 9 bold", command=avancar)
+    botao_avancar = Button(main_label_cli, text = "AVANÇAR", font="Arial 9", command=avancar)
     botao_avancar['state'] = DISABLED
     botao_avancar.place(x=377, y=20)
 
@@ -603,8 +603,8 @@ def criar_tela_cadastro():
     main_label_cad.place(x=10, y=65)
 
     label_texto_pes = Label(main_label_cad)
-    label_texto_pes.config(fg="black", font='Arial 7', text='Todo os itens que possuem ( * ) são obrigatórios', width=40, height=1)
-    label_texto_pes.place(x=190,y=315)
+    label_texto_pes.config(fg="black", font='Arial 8', text='Todos os itens que possuem ( * ) são obrigatórios', width=40, height=1)
+    label_texto_pes.place(x=0,y=315)
 
     #Entradas do usuario que serão salvas no dicionário
     label_id = Label(main_label_cad, text='* ISBN', font="Arial 9", fg="black")
@@ -636,11 +636,11 @@ def criar_tela_cadastro():
     combo_qntd = ttk.Combobox(main_label_cad, width=8, height=10, values=qntd_values)
     combo_qntd.place(x=2, y=260)
 
-    botao_cadastrar = Button(main_label_cad,text="CADASTRAR", width= 22, font='Arial 10 bold',command=cadastrar)
-    botao_cadastrar.place(x=2, y=315)
+    botao_cadastrar = Button(janela_cadastro,text="CADASTRAR", width= 16, font='Arial 8',command=cadastrar)
+    botao_cadastrar.place(x=10, y=420)
 
-    botao_fechar = Button(janela_cadastro, text="VOLTAR", width=25, fg="#042c44", command=lambda:sair(janela_cadastro))
-    botao_fechar.place(x=15, y=420)
+    botao_fechar = Button(janela_cadastro, text="VOLTAR", font="Arial 8",  width=16, command=lambda:sair(janela_cadastro))
+    botao_fechar.place(x=10, y=450)
 
 #########################################################################################################################    
 #MOSTRAR NA TREE VIEW OS LIVROS QUE FORAM LOCADOS
@@ -655,7 +655,6 @@ def mostrar_locados():
         print(dic_locacao)
 
 def devolver():
-    arquivo_locado = open("locados.txt", "a")
     try:
         cliente_livro = tv_locar.focus() 
         cliente_livro_dev = tv_locar.item(cliente_livro, 'values') #Lista dos valores selecionados da TreeView
@@ -697,6 +696,7 @@ def devolver():
                         editar_arquivo_livro.write(linhas)
                     dic_livros[isbn][3] = new_qntd
                 editar_arquivo_livro.write(nova_string_livros+"\n")
+            messagebox.showinfo("Sucesso","Devolução finalizada com sucesso")
     except:
         messagebox.showerror("ops!","Nenhum livro selecionado para devolução")
 
@@ -752,6 +752,7 @@ def finalizar():
                 if linha.strip("\n") != string_del:
                     editar_arquivo.write(linha)
             editar_arquivo.write(new_string+"\n")
+        messagebox.showinfo("Sucesso","Locação finalizada com sucesso")
         
     
 
@@ -846,43 +847,5 @@ def criar_tela_venda():
     combo_periodo['state'] = DISABLED
     combo_periodo.place(x=77, y=33)
 
-    botao_voltar_loc = Button(janela_venda, text="VOLTAR", width=22, command=lambda:sair(janela_venda))
+    botao_voltar_loc = Button(janela_venda, text="VOLTAR", width=16, command=lambda:sair(janela_venda))
     botao_voltar_loc.place(x=10, y=450)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

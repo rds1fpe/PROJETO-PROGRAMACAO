@@ -1,2 +1,0 @@
-123456789,ronaldo daniel,rds6@discente.ifpe.edu.br,81999999999,masculino,2,fevereiro,1997,pe
-987654321,gabriela,gabriela@gmail.com,81988888888,feminino,2,maio,1999,al

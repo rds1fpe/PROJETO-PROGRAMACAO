@@ -12,7 +12,8 @@ caminho = ("/Users/RONALDO/Desktop/Python/images/")
 janela_principal =Tk()
 janela_principal.geometry ("640x480+0+0")
 janela_principal.title("Library Sis")
-janela_principal.iconbitmap(True,caminho+"icon.ico") # True para o ícone aparecer nas outra janelas
+janela_principal.iconbitmap(True,
+caminho+"icon.ico") # True para o ícone aparecer nas outra janelas
 janela_principal.resizable(0,0)
 
 #imagem de fundo
@@ -55,7 +56,7 @@ label_venda.place(x=472, y=216)
 
 
 #Botão para sair do programa!
-botao1 = Button(janela_principal, text='Sair',font=('Helvetica', 8, 'bold'), width=10, command=lambda:sair(janela_principal))
+botao1 = Button(janela_principal, text='Sair',font='Helvetica 8 ', width=10, command=lambda:sair(janela_principal))
 botao1.place(x=550, y=445)
 
 #mainloop executa o loop que permite a janela permanecer aberta
