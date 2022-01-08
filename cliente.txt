@@ -1,11 +1,2 @@
-71088760430,Ronaldo Daniel da Silva,rdsbojac@gmail.com,81999717049,Masculino,25,Maio,1997,PE
-10434185477,Thays Ramos,thaysbojac,81998207791,Feminino,27,Fevereiro,1997,PE
-05112876409,gil,gil@hotmail.com,81961556561,Feminino,3,Maio,1986,PE
-70938093486,Joao Victor Rodrigues,joao@gmail.com,81992378611,Masculino,11,Abril,1998,PE
-11391586433,Paulo Lucas,pauli@gmail.com,8196546565,Masculino,2,Abril,2001,PE
-05876037478,Juliana Souza Lima,juliana@gmail.com,81995681002,Feminino,7,Outubro,1976,PE
-13755457440,camily,camily@gmail.com,819568452446,feminino,29,novembro,2002,pe
-123456789,cliente1,cliente1@gmail.com,81999999999,masculino,25,maio,1985,ro
-987654321,cliente2,cliente2@gmail.com,81923232332,feminino,3,junho,1904,ba
-789456123,cliente3,cliente3@gmail.com,81978954621,feminino,3,setembro,1961,to
-123123123,cliente4,cliente4@gmail.com,81946569495,masculino,25,abril,1980,al
+123456789,ronaldo daniel,rds6@discente.ifpe.edu.br,81999999999,masculino,2,fevereiro,1997,pe
+987654321,gabriela,gabriela@gmail.com,81988888888,feminino,2,maio,1999,al

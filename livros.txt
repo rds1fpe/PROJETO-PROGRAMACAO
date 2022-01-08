@@ -1,12 +1,1 @@
-123,123,123,123,45
-3,dom quixote de la mancha,1940,miguel de cervantes,7
-1,orgulho e preconceito,1950,jane austen,8
-321,321,321,desconhecido,9
-4,o pequeno principe,1890,antoine de saint-exupery,7
-7,o processo,1898,franz kafka,N/D
-6,o conde de monte cristo,1860,alexandre dumas,N/D
-5,dom casmurro,1910,machado de assis,N/D
-2,1984,1900,george grwell,63
-8,chapeuzinho vermelho,1760,desconhecido,N/D
-12,12,12,desconhecido,3
-234,234,234,234,D
+1,assim falou zaratustra,1950,nietzsche,2

@@ -258,7 +258,7 @@ def selecionar():
     selecionados = tv.item(selected, 'values') # Tupla com as informações dos livros
     print(selecionados)
     if selected:
-        if selecionados[4] == "N/D":
+        if selecionados[4] == str(0):
                 messagebox.showerror("Ops!","Este Livro não está disponível")
         else:
             ask = messagebox.askquestion("Continuar?","Livro selecionado, deseja abrir tela de cadastro de cliente?")
@@ -280,10 +280,8 @@ def avancar():
                 criar_tela_venda()
                 nome = cliente_selecionado[0]
                 titulo = dic_locacao[nome][1]
-                data_dev = int(dic_locacao[nome][2]) # Transforma o item selecionado no Combobox em inteiro para somar na data(semanas)
-                data_atual = date.today()
-                devolucao = data_atual + timedelta(weeks = data_dev)
-                tv_locar.insert("","end", values=(nome, titulo, devolucao))
+                data_dev = dic_locacao[nome][2] # Transforma o item selecionado no Combobox em inteiro para somar na data(semanas)
+                tv_locar.insert("","end", values=(nome, titulo, data_dev))
             else:
                 try:
                     if selecionados and cliente_selecionado:
@@ -543,40 +541,42 @@ def criar_tela_cliente():
 #Função responsável por cadastrar o livro num dicionario e escrever as informações do mesmo no arquivo
 def cadastrar():
     arquivo_livro = open('livros.txt','a')
-    if id_livro.get() in dic_livros:
-        messagebox.showinfo("Ops!","Livro já registrado.")
-        sair(janela_cadastro)
-    
-    elif id_livro.get() == "" or nome_livro.get() == "" or ano_livro.get() == "":
-        messagebox.showerror("Ops!","Preencha todos os campos obrigatórios.")
-
-    elif autor_livro.get() == "":
-        dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), "desconhecido","D"]
-        dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido","D"]
-        dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido","D"]
-        lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), "desconhecido","D"])
-        arquivo_livro.write(id_livro.get().lower()+",")
-        arquivo_livro.write(nome_livro.get().lower()+",")
-        arquivo_livro.write(ano_livro.get().lower()+",")
-        arquivo_livro.write("desconhecido" +",")
-        arquivo_livro.write("D"+"\n") # inserir o status do livro (sempre começa com disponivel ""D)
+    confirmacao = messagebox.askquestion("Finalizar?", "Deseja finalizar o cadastro do livro?")
+    if confirmacao == "yes":
+        if id_livro.get() in dic_livros:
+            messagebox.showinfo("Ops!","Livro já registrado.")
+            sair(janela_cadastro)
         
-        messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
-        sair(janela_cadastro)
-        arquivo_livro.close()
+        elif id_livro.get() == "" or nome_livro.get() == "" or ano_livro.get() == "":
+            messagebox.showerror("Ops!","Preencha todos os campos obrigatórios.")
 
-    else:
-        dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(),"D"]
-        dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(),"D"]
-        dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(),"D"]
-        lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(),"D"])
-        arquivo_livro.write(id_livro.get().lower()+",")
-        arquivo_livro.write(nome_livro.get().lower()+",")
-        arquivo_livro.write(ano_livro.get().lower()+",")
-        arquivo_livro.write(autor_livro.get().lower()+",")
-        arquivo_livro.write("D"+"\n")
-        messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
-        sair(janela_cadastro)
+        elif autor_livro.get() == "":
+            dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), "desconhecido", combo_qntd.get()]
+            dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido", combo_qntd.get()]
+            dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), "desconhecido", combo_qntd.get()]
+            lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), "desconhecido", combo_qntd.get()])
+            arquivo_livro.write(id_livro.get().lower()+",")
+            arquivo_livro.write(nome_livro.get().lower()+",")
+            arquivo_livro.write(ano_livro.get().lower()+",")
+            arquivo_livro.write("desconhecido" +",")
+            arquivo_livro.write(combo_qntd.get() + "\n") # inserir o status do livro (sempre começa com disponivel ""D)
+            
+            messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
+            sair(janela_cadastro)
+            arquivo_livro.close()
+
+        else:
+            dic_livros[id_livro.get().lower()] = [nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), combo_qntd.get()]
+            dic_titulo[nome_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), combo_qntd.get()]
+            dic_autor[autor_livro.get().lower()] = [id_livro.get().lower(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), combo_qntd.get()]
+            lista_autor.append([id_livro.get(), nome_livro.get().lower(), ano_livro.get(), autor_livro.get().lower(), combo_qntd.get()])
+            arquivo_livro.write(id_livro.get().lower()+",")
+            arquivo_livro.write(nome_livro.get().lower()+",")
+            arquivo_livro.write(ano_livro.get().lower()+",")
+            arquivo_livro.write(autor_livro.get().lower()+",")
+            arquivo_livro.write(combo_qntd.get() + "\n")
+            messagebox.showinfo("Sucesso!","Livro adicionado com sucesso.")
+            sair(janela_cadastro)
         
     arquivo_livro.close()
     
@@ -588,6 +588,7 @@ def criar_tela_cadastro():
     global ano_livro
     global autor_livro
     global qntd_livro
+    global combo_qntd
 
     janela_cadastro = Toplevel()
     janela_cadastro.geometry("480x480+641+0")
@@ -626,6 +627,15 @@ def criar_tela_cadastro():
     autor_livro = Entry(main_label_cad, width=30)
     autor_livro.place(x=2, y=200)
 
+    qntd_values = []
+    for x in range (1,51):
+        qntd_values.append(x)
+
+    label_qntd = Label(main_label_cad, text="* Quantidade")
+    label_qntd.place(x=0, y=240)
+    combo_qntd = ttk.Combobox(main_label_cad, width=8, height=10, values=qntd_values)
+    combo_qntd.place(x=2, y=260)
+
     botao_cadastrar = Button(main_label_cad,text="CADASTRAR", width= 22, font='Arial 10 bold',command=cadastrar)
     botao_cadastrar.place(x=2, y=315)
 
@@ -640,11 +650,57 @@ def mostrar_locados():
     for locado in dic_locacao:
         nome = dic_locacao[locado][0]
         titulo = dic_locacao[locado][1]
-        data_dev = int(dic_locacao[locado][2])
-        data_atual = date.today()
-        devolucao = data_atual + timedelta(weeks= data_dev)
-        tv_locar.insert("","end", values=(nome, titulo, devolucao))
-    
+        data_dev = dic_locacao[locado][2]
+        tv_locar.insert("","end", values=(nome, titulo, data_dev))
+        print(dic_locacao)
+
+def devolver():
+    arquivo_locado = open("locados.txt", "a")
+    try:
+        cliente_livro = tv_locar.focus() 
+        cliente_livro_dev = tv_locar.item(cliente_livro, 'values') #Lista dos valores selecionados da TreeView
+        nome = cliente_livro_dev[0]
+        titulo = cliente_livro_dev[1]
+        data_dev = cliente_livro_dev[2]
+        string_del_dev = nome + "," + titulo + "," + data_dev
+        ask_devolver = messagebox.askquestion("Devolver?", "Deseja realizar a devolução do livro?")
+        if ask_devolver == "yes":
+            del dic_locacao[nome]
+            tv_locar.delete(cliente_livro)
+            with open("locados.txt", "r") as livros_locados:
+                lista_linha_dev = livros_locados.readlines()
+            with open("locados.txt", "w") as livros_locados:
+                for linhas in lista_linha_dev:
+                    if linhas.strip("\n") != string_del_dev: #Escreve no arquivo todas as linhas que são diferentes da string que será deletada
+                        livros_locados.write(linhas)
+
+
+            # Muda a informação (disponível) no arquivo de livros
+            #Foi necessário pegar essas informações do dicionário de Titulos porque...
+            #A única chave disponível para pesquisa era "titulo"
+            #Obtendo as Strings para concatenar e somar 1 livro a mais na quantidade
+            isbn = dic_titulo[titulo][0]
+            titulo_l = dic_titulo[titulo][1]
+            ano = dic_titulo[titulo][2]
+            autor = dic_titulo[titulo][3]
+            qntd = int(dic_livros[isbn][3])
+            new_qntd = qntd + 1
+            
+            string_del_livros = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(qntd)
+            nova_string_livros = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(new_qntd)
+            
+            with open("livros.txt","r") as editar_arquivo_livro:
+                linhas_livros = editar_arquivo_livro.readlines()
+            with open("livros.txt","w") as editar_arquivo_livro:
+                for linhas in linhas_livros:
+                    if linhas.strip("\n") != string_del_livros:
+                        editar_arquivo_livro.write(linhas)
+                    dic_livros[isbn][3] = new_qntd
+                editar_arquivo_livro.write(nova_string_livros+"\n")
+    except:
+        messagebox.showerror("ops!","Nenhum livro selecionado para devolução")
+
+
         
 #FUNÇÃO PARA DESBLOQUEAR A ESCOLHA DA QUANTIDADE DE TEMPO DA LOCAÇÃO
 def select_locacao():
@@ -684,32 +740,18 @@ def finalizar():
         qntd = int(dic_livros[isbn][3])
         new_qntd = qntd - 1
 
-        #Linha que será deletada do arquivo de livros
+        #Linha que será deletada do arquivo de livros e linha que será inserida
         string_del = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(qntd)
+        new_string = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(new_qntd) # nova linha que será colocada no arquivo de livros
         
-        #Se a quantidade for igual a 0, o valor (N/D) é inserido no arquivo
-        if new_qntd == 0:
-            new_string = isbn + "," + titulo_l + "," + ano + "," + autor + "," + "N/D"
-            dic_livros[isbn][3] = "N/D" # muda a quantidade no dicionário para n/d para não ser necessário reabrir o arquivo
-            with open("livros.txt", "r") as editar_arquivo: # abrindo o arquivo no modo de leitura
-                lista_linhas = editar_arquivo.readlines() # criando uma lista de linhas
-            with open("livros.txt", "w") as editar_arquivo:
-                for linha in lista_linhas:
-                    if linha.strip("\n") != string_del: # se a linha for diferente da string que vai ser removida, ele escreve essa linha no arquivo
-                        editar_arquivo.write(linha)
-                editar_arquivo.write(new_string+"\n")
-
-        #Se a quantidade for maio que 0, apenas subtrai 1 da quantidade e escreve essa informação no arquivo
-        elif new_qntd > 0:
-            new_string = isbn + "," + titulo_l + "," + ano + "," + autor + "," + str(new_qntd) # nova linha que será colocada no arquivo de livros
-            dic_livros[isbn][3] = new_qntd #Muda a informação no dicionário para n ser necessário reabrir o programa e ler o arquivo novamente
-            with open("livros.txt", "r") as editar_arquivo: # abrindo o arquivo no modo de leitura
-                lista_linhas = editar_arquivo.readlines() # criando uma lista de linhas
-            with open("livros.txt", "w") as editar_arquivo:
-                for linha in lista_linhas:
-                    if linha.strip("\n") != string_del:
-                        editar_arquivo.write(linha)
-                editar_arquivo.write(new_string+"\n")
+        dic_livros[isbn][3] = new_qntd #Muda a informação no dicionário para n ser necessário reabrir o programa e ler o arquivo novamente
+        with open("livros.txt", "r") as editar_arquivo: # abrindo o arquivo no modo de leitura
+            lista_linhas = editar_arquivo.readlines() # criando uma lista de linhas
+        with open("livros.txt", "w") as editar_arquivo:
+            for linha in lista_linhas:
+                if linha.strip("\n") != string_del:
+                    editar_arquivo.write(linha)
+            editar_arquivo.write(new_string+"\n")
         
     
 
@@ -754,8 +796,11 @@ def criar_tela_venda():
     botao_mostrar_loc = Button(main_label_venda, text="Vizualizar Locações", font="Arial 8", width=16, command=mostrar_locados)
     botao_mostrar_loc.place(x=339, y=2)
 
+    botao_devolucao = Button(main_label_venda, text= "Devolver", font= "Arial 8 ", width=16, command= devolver)
+    botao_devolucao.place(x=339, y=192)
+
     label_info = Label(main_label_venda, text="Dados do Cliente/Livro", font="Arial 8 bold")
-    label_info.place(x=5, y=195)
+    label_info.place(x=5, y=222)
 
     tv_locar_info = ttk.Treeview(main_label_venda)
     tv_locar_info.config(columns=("Cliente", "Livro"), show="headings")
@@ -764,21 +809,21 @@ def criar_tela_venda():
 
     tv_locar_info.heading("Cliente", text="Cliente")
     tv_locar_info.heading("Livro", text="Livro")
-    tv_locar_info.place(x=5, y=220, height=100)
+    tv_locar_info.place(x=5, y=247, height=100)
 
-    botao_selecionado = Button(main_label_venda, text="Selecionar", font="Arial 9", width=16, command=select_locacao)
+    botao_selecionado = Button(main_label_venda, text="Selecionar", font="Arial 8", width=16, command=select_locacao)
     botao_selecionado['state'] = DISABLED
-    botao_selecionado.place(x=127, y=320)
+    botao_selecionado.place(x=143, y=347)
 
-    botao_locar = Button(main_label_venda, text="Finalizar", font="Arial 9", width=16, height=2, command=finalizar)
+    botao_locar = Button(main_label_venda, text="Finalizar", font="Arial 8", width=16, command=finalizar)
     botao_locar['state'] = DISABLED
-    botao_locar.place(x=321 , y=320)
+    botao_locar.place(x=339 , y=347)
 
     label_info_data = Label(main_label_venda, text="Selecione o Período da locação)", font="Arial 8 bold")
-    label_info_data.place(x=265,  y=195) 
+    label_info_data.place(x=265,  y=222) 
 
     label_select = Label(main_label_venda, width=25, height=6, relief="groove", borderwidth=3)
-    label_select.place(x=262, y=220) 
+    label_select.place(x=262, y=249) 
 
     data = date.today()
     label_info_atual = Label(label_select, text="Data Atual", font="Arial 8")
@@ -790,7 +835,13 @@ def criar_tela_venda():
     label_info_dev = Label(label_select, text="Período de locação\n (semanas)", font="Arial 8")
     label_info_dev.place(x=77,  y=0)
 
-    lista_periodo = ["1","2","3","4","5","6"]
+    data_atual = date.today()
+    semana_1 = data_atual + timedelta(weeks = 1)
+    semana_2 = data_atual + timedelta(weeks = 2)
+    semana_3 = data_atual + timedelta(weeks = 3)
+    semana_4 = data_atual + timedelta(weeks = 4)
+
+    lista_periodo = [semana_1, semana_2, semana_3, semana_4]
     combo_periodo = ttk.Combobox(label_select , width=13, values=lista_periodo)
     combo_periodo['state'] = DISABLED
     combo_periodo.place(x=77, y=33)
